@@ -3,7 +3,7 @@ import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function EmojiPicker({ isVisible, children, onClose }) {
   return (
-    <Modal animationType="slide" transparent={true} visible={isVisible}>
+    <Modal animationType="slide" transparent={true} visible={isVisible} onClose={onClose}>
       <View style={styles.modalContent}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Choose a sticker</Text>
@@ -11,6 +11,7 @@ export default function EmojiPicker({ isVisible, children, onClose }) {
             <MaterialIcons name="close" coloe="#fff" size={22}/>
           </Pressable>
         </View>
+        {children}
       </View>
     </Modal>
   );
