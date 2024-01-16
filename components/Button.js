@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet } from "react-native";
-import { View, Text } from "react-native-web";
+import { View, Text } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export default function Button({ label, theme, onPress }) {
