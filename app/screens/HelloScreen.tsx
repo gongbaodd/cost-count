@@ -1,27 +1,83 @@
-
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Screen, Text } from "app/components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "app/models"
+import { Button, Screen, Text, TextField } from "app/components"
+import { spacing } from "app/theme"
 
 interface HelloScreenProps extends AppStackScreenProps<"Hello"> {}
 
 export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_props) {
-  // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
+  const [content, setContent] = useState("")
+  const [worth, setWorth] = useState(0)
+  const [worthContent, setWorthContent] = useState("0.00")
+  const [worthFocused, setWorthFocused] = useState(false)
 
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
   return (
-    <Screen style={$root} preset="scroll">
-      <Text text="hello" />
+    <Screen preset="auto" contentContainerStyle={$root} safeAreaEdges={["top", "bottom"]}>
+      <Text text="hello" preset="heading" />
+      <TextField
+        value={content}
+        autoCorrect={false}
+        autoCapitalize="none"
+        label="itemName"
+        placeholder="itemName"
+        onChangeText={setContent}
+      />
+      <TextField
+        value={worthContent}
+        autoCorrect={false}
+        autoCapitalize="none"
+        label="itemWorth"
+        placeholder="itemWorth"
+        keyboardType="numeric"
+        onFocus={onNumbericWorthFocus}
+        onBlur={onNumbericWorthBlur}
+        onChangeText={setNumbericWorth}
+      />
+      <Button
+        text="Add"
+        style={$addButton}
+        onPress={() => {
+          console.log(content)
+          console.log(worth)
+        }}
+      />
     </Screen>
   )
+
+  function onNumbericWorthFocus() {
+    setWorthFocused(true)
+    setWorthContent("")
+  }
+
+  function onNumbericWorthBlur() {
+    let newWorth = worth.toFixed(2)
+
+    if (worthContent !== "") {
+      const parsedWorth = parseFloat(worthContent || "0").toFixed(2)
+      if (parsedWorth !== "NaN") {
+        newWorth = parsedWorth
+      }
+    }
+    
+    setWorthFocused(false)
+    setWorthContent(newWorth)
+    setWorth(Number(newWorth))
+  }
+
+  function setNumbericWorth(worth: string) {
+    if (worthFocused) {
+      setWorthContent(worth)
+    }
+  }
 })
 
 const $root: ViewStyle = {
-  flex: 1,
+  paddingVertical: spacing.xxl,
+  paddingHorizontal: spacing.lg,
+}
+
+const $addButton: ViewStyle = {
+  marginTop: spacing.xl,
 }
