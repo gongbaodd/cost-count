@@ -1,6 +1,6 @@
 import React, { FC, useState, useSyncExternalStore } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle } from "react-native"
+import { Modal, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
 import { Button, Screen, Text, TextField } from "app/components"
 import { spacing } from "app/theme"
@@ -18,25 +18,31 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
 
   return (
     <Screen preset="auto" contentContainerStyle={$root} safeAreaEdges={["top", "bottom"]}>
-      <Text text="hello" preset="heading" />
+      <Text text="Expanse Tracker" preset="heading" />
       <TextField
         value={content}
         autoCorrect={false}
         autoCapitalize="none"
-        label="itemName"
-        placeholder="itemName"
+        label="Name"
+        placeholder="name"
         onChangeText={setContent}
       />
       <TextField
         value={worthContent}
         autoCorrect={false}
         autoCapitalize="none"
-        label="itemWorth"
-        placeholder="itemWorth"
+        label="Expanse"
+        placeholder="0.00"
         keyboardType="numeric"
         onFocus={onNumbericWorthFocus}
         onBlur={onNumbericWorthBlur}
         onChangeText={setNumbericWorth}
+      />
+      <TextField 
+        value="idle"
+        autoCorrect={false}
+        autoCapitalize="none"
+        label="Category"
       />
       <Button
         text="Add"
@@ -50,6 +56,17 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
           })
         }}
       />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={true}
+      >
+        <View style={[]}>
+          <View style={[]}>
+            <Text>Category</Text>
+          </View>
+        </View>
+      </Modal>
     </Screen>
   )
 
