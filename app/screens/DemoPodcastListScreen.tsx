@@ -1,3 +1,4 @@
+// Deprecated
 import { observer } from "mobx-react-lite"
 import React, { ComponentType, FC, useEffect, useMemo } from "react"
 import {

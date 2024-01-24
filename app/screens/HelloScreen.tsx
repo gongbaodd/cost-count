@@ -1,9 +1,10 @@
-import React, { FC, useState } from "react"
+import React, { FC, useState, useSyncExternalStore } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
 import { Button, Screen, Text, TextField } from "app/components"
 import { spacing } from "app/theme"
+import { ItemStore } from "app/models"
 
 interface HelloScreenProps extends AppStackScreenProps<"Hello"> {}
 
@@ -12,6 +13,8 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
   const [worth, setWorth] = useState(0)
   const [worthContent, setWorthContent] = useState("0.00")
   const [worthFocused, setWorthFocused] = useState(false)
+
+  // const items = useSyncExternalStore(ItemStore.subscribe, ItemStore.getSnapshot)
 
   return (
     <Screen preset="auto" contentContainerStyle={$root} safeAreaEdges={["top", "bottom"]}>
