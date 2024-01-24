@@ -14,7 +14,7 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
   const [worthContent, setWorthContent] = useState("0.00")
   const [worthFocused, setWorthFocused] = useState(false)
 
-  // const items = useSyncExternalStore(ItemStore.subscribe, ItemStore.getSnapshot)
+  useSyncExternalStore(ItemStore.subscribe, ItemStore.getSnapshot)
 
   return (
     <Screen preset="auto" contentContainerStyle={$root} safeAreaEdges={["top", "bottom"]}>
@@ -42,8 +42,12 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
         text="Add"
         style={$addButton}
         onPress={() => {
-          console.log(content)
-          console.log(worth)
+          ItemStore.addItem({
+            name: content,
+            price: worth,
+            type: "idle",
+            id: "1"
+          })
         }}
       />
     </Screen>

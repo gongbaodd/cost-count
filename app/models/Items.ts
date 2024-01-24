@@ -12,6 +12,7 @@ export const ItemStore = {
     addItem: (item: Item) => {
         items.push(item)
         emitChange()
+        console.log(items)
     },
     deleteItem: (id: string) => {
         const index = items.findIndex((item) => item.id === id)
