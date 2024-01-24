@@ -2,9 +2,9 @@ import React, { FC, useState, useSyncExternalStore } from "react"
 import { observer } from "mobx-react-lite"
 import { Modal, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Button, Screen, Text, TextField } from "app/components"
-import { spacing } from "app/theme"
-import { ItemStore } from "app/models"
+import { Button, ListView, Screen, Text, TextField } from "app/components"
+import { colors, spacing } from "app/theme"
+import { ItemStore, TypeStore } from "app/models"
 
 interface HelloScreenProps extends AppStackScreenProps<"Hello"> {}
 
@@ -15,6 +15,7 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
   const [worthFocused, setWorthFocused] = useState(false)
 
   useSyncExternalStore(ItemStore.subscribe, ItemStore.getSnapshot)
+  const categories = useSyncExternalStore(TypeStore.subscribe, TypeStore.getSnapshot)
 
   return (
     <Screen preset="auto" contentContainerStyle={$root} safeAreaEdges={["top", "bottom"]}>
@@ -39,10 +40,10 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
         onChangeText={setNumbericWorth}
       />
       <TextField 
-        value="idle"
-        autoCorrect={false}
-        autoCapitalize="none"
-        label="Category"
+        value="idle" 
+        autoCorrect={false} 
+        autoCapitalize="none" 
+        label="Category" 
       />
       <Button
         text="Add"
@@ -52,19 +53,23 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
             name: content,
             price: worth,
             type: "idle",
-            id: "1"
+            id: "1",
           })
         }}
       />
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={true}
-      >
-        <View style={[]}>
-          <View style={[]}>
-            <Text>Category</Text>
-          </View>
+      <Modal animationType="slide" transparent={true} visible={true}>
+        <View style={$modal}>
+          <ListView<typeof categories[0]>
+            ListHeaderComponent={() => <Text text="Category" preset="bold" />}
+            renderItem={({item}) => {
+              return (
+                <View>
+                  <Text text={item.name} key={item.id} />
+                </View>
+              )
+            }} 
+            data={categories}          
+          />
         </View>
       </Modal>
     </Screen>
@@ -84,7 +89,7 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
         newWorth = parsedWorth
       }
     }
-    
+
     setWorthFocused(false)
     setWorthContent(newWorth)
     setWorth(Number(newWorth))
@@ -104,4 +109,16 @@ const $root: ViewStyle = {
 
 const $addButton: ViewStyle = {
   marginTop: spacing.xl,
+}
+
+const $modal: ViewStyle = {
+  height: "50%",
+  width: "100%",
+  backgroundColor: colors.background,
+  borderTopRightRadius: 20,
+  borderTopLeftRadius: 20,
+  position: "absolute",
+  bottom: 0,
+  paddingHorizontal: spacing.lg,
+  paddingVertical: spacing.xl,
 }
