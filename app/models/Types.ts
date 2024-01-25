@@ -5,7 +5,7 @@ interface Type {
 
 const types: Type[] = [
     { name: "idle", id: "1" },
-    { name: "food", id: "2"}
+    { name: "food", id: "2"},
 ]
 let listeners: (() => void)[] = []
 

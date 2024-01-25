@@ -40,10 +40,7 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
         onBlur={onNumbericWorthBlur}
         onChangeText={setNumbericWorth}
       />
-      <Text
-        text="Category"
-        preset="formLabel"
-      ></Text>
+      <Text text="Category" preset="formLabel"></Text>
       <Button
         text="idle"
         onPress={() => {
@@ -51,7 +48,7 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
         }}
         style={$typeButton}
       ></Button>
-      
+
       <Button
         text="Add"
         style={$addButton}
@@ -65,28 +62,30 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
           })
         }}
       />
-      <Modal 
-        animationType="slide" 
-        transparent={true} 
+      <Modal
+        animationType="slide"
+        transparent={true}
         visible={showTypeModal}
         onRequestClose={() => {
           setShowTypeModal(false)
         }}
       >
         <View style={$modal}>
-          <ListView<typeof categories[0]>
+          <ListView<(typeof categories)[0]>
             ListHeaderComponent={() => (
               <View style={$modalTitle}>
                 <Text text="Category" preset="bold" />
                 <Icon icon="x" onPress={() => setShowTypeModal(false)} />
               </View>
             )}
-            renderItem={({item}) => {
-              return (
-                  <ListItem text={item.name} key={item.id} />
-              )
-            }} 
-            data={categories}          
+            renderItem={({ item }) => {
+              return <ListItem text={item.name} key={item.id} />
+            }}
+            data={categories}
+          />
+          <TextField
+            placeholder="Add Category"
+            RightAccessory={() => <Button text="Add" />}
           />
         </View>
       </Modal>
@@ -152,3 +151,5 @@ const $typeButton: ViewStyle = {
   marginTop: spacing.xs,
   justifyContent: "flex-start",
 }
+
+
