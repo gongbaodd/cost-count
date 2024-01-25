@@ -2,7 +2,7 @@ import React, { FC, useState, useSyncExternalStore } from "react"
 import { observer } from "mobx-react-lite"
 import { Modal, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Button, ListView, Screen, Text, TextField } from "app/components"
+import { Button, Icon, ListItem, ListView, Screen, Text, TextField } from "app/components"
 import { colors, spacing } from "app/theme"
 import { ItemStore, TypeStore } from "app/models"
 
@@ -13,6 +13,7 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
   const [worth, setWorth] = useState(0)
   const [worthContent, setWorthContent] = useState("0.00")
   const [worthFocused, setWorthFocused] = useState(false)
+  const [showTypeModal, setShowTypeModal] = useState(false)
 
   useSyncExternalStore(ItemStore.subscribe, ItemStore.getSnapshot)
   const categories = useSyncExternalStore(TypeStore.subscribe, TypeStore.getSnapshot)
@@ -39,15 +40,22 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
         onBlur={onNumbericWorthBlur}
         onChangeText={setNumbericWorth}
       />
-      <TextField 
-        value="idle" 
-        autoCorrect={false} 
-        autoCapitalize="none" 
-        label="Category" 
-      />
+      <Text
+        text="Category"
+        preset="formLabel"
+      ></Text>
+      <Button
+        text="idle"
+        onPress={() => {
+          setShowTypeModal(true)
+        }}
+        style={$typeButton}
+      ></Button>
+      
       <Button
         text="Add"
         style={$addButton}
+        preset="filled"
         onPress={() => {
           ItemStore.addItem({
             name: content,
@@ -57,15 +65,25 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
           })
         }}
       />
-      <Modal animationType="slide" transparent={true} visible={true}>
+      <Modal 
+        animationType="slide" 
+        transparent={true} 
+        visible={showTypeModal}
+        onRequestClose={() => {
+          setShowTypeModal(false)
+        }}
+      >
         <View style={$modal}>
           <ListView<typeof categories[0]>
-            ListHeaderComponent={() => <Text text="Category" preset="bold" />}
+            ListHeaderComponent={() => (
+              <View style={$modalTitle}>
+                <Text text="Category" preset="bold" />
+                <Icon icon="x" onPress={() => setShowTypeModal(false)} />
+              </View>
+            )}
             renderItem={({item}) => {
               return (
-                <View>
-                  <Text text={item.name} key={item.id} />
-                </View>
+                  <ListItem text={item.name} key={item.id} />
               )
             }} 
             data={categories}          
@@ -121,4 +139,16 @@ const $modal: ViewStyle = {
   bottom: 0,
   paddingHorizontal: spacing.lg,
   paddingVertical: spacing.xl,
+}
+
+const $modalTitle: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: spacing.xl,
+}
+
+const $typeButton: ViewStyle = {
+  marginTop: spacing.xs,
+  justifyContent: "flex-start",
 }
