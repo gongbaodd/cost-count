@@ -40,6 +40,7 @@ export type AppStackParamList = {
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
   Hello: undefined 
+  Record: undefined
 }
 
 /**
@@ -63,6 +64,7 @@ const AppStack = observer(function AppStack() {
       initialRouteName={"Hello"} // @demo remove-current-line
     >
       <Stack.Screen name="Hello" component={Screens.HelloScreen} />
+      <Stack.Screen name="Record" component={Screens.RecordScreen} />
     </Stack.Navigator>
   )
 })

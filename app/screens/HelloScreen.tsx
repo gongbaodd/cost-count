@@ -85,7 +85,12 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
           />
           <TextField
             placeholder="Add Category"
-            RightAccessory={() => <Button text="Add" />}
+            RightAccessory={() => (
+              <Button 
+                text="Add"
+                style={$addTypeButton}
+              />
+            )}
           />
         </View>
       </Modal>
@@ -150,6 +155,9 @@ const $modalTitle: ViewStyle = {
 const $typeButton: ViewStyle = {
   marginTop: spacing.xs,
   justifyContent: "flex-start",
+  minHeight: spacing.lg
 }
 
-
+const $addTypeButton: ViewStyle = {
+  minHeight: spacing.lg,
+}
