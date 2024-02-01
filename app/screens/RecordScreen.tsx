@@ -1,11 +1,16 @@
 import React, { FC } from "react"
 import { observer } from "mobx-react-lite"
-import { ScrollView, View, ViewStyle } from "react-native"
+import { ScrollView, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Screen, Header, ListView, ListItem } from "app/components"
+import { Screen, Header, ListView, ListItem, Text } from "app/components"
 import { spacing } from "app/theme"
 
 interface RecordScreenProps extends AppStackScreenProps<"Record"> {}
+
+const years = [
+  "2023",
+  "2024"
+]
 
 const test = [
   {
@@ -124,10 +129,7 @@ const test = [
 
 export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScreen({ navigation }) {
   return (
-    <Screen 
-      preset="fixed" 
-      contentContainerStyle={$root}
-    >
+    <Screen preset="fixed" contentContainerStyle={$root}>
       <Header
         leftIcon="back"
         onLeftPress={() => {
@@ -138,7 +140,15 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
       <ScrollView style={$listView}>
         <ListView
           data={test}
-          renderItem={({ item }) => <ListItem text={item.name} key={item.id} />}
+          renderItem={({ item }) => (
+            <ListItem
+              text={item.name}
+              key={item.id}
+              LeftComponent={<Text text={item.type} />}
+              RightComponent={<Text text={item.price} />}
+              bottomSeparator
+            />
+          )}
         />
       </ScrollView>
     </Screen>
