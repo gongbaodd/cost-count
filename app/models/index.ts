@@ -1,5 +1,5 @@
 export * from "./Items"
-export * from "./Types"
+export * from "./Categories"
 
 
 export * from "./helpers/getRootStore"

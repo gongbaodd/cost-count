@@ -9,8 +9,8 @@ const types: Type[] = [
 ]
 let listeners: (() => void)[] = []
 
-export const TypeStore = {
-  addType: (t: Type) => {
+export const CategoryStore = {
+  addCategory: (t: Type) => {
     types.push(t)
     emitChange()
   },

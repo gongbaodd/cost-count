@@ -4,7 +4,7 @@ import { Modal, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
 import { Button, Icon, ListItem, ListView, Screen, Text, TextField } from "app/components"
 import { colors, spacing } from "app/theme"
-import { ItemStore, TypeStore } from "app/models"
+import { ItemStore, CategoryStore } from "app/models"
 
 interface HelloScreenProps extends AppStackScreenProps<"Hello"> {}
 
@@ -16,7 +16,7 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen({
   const [showTypeModal, setShowTypeModal] = useState(false)
 
   useSyncExternalStore(ItemStore.subscribe, ItemStore.getSnapshot)
-  const categories = useSyncExternalStore(TypeStore.subscribe, TypeStore.getSnapshot)
+  const categories = useSyncExternalStore(CategoryStore.subscribe, CategoryStore.getSnapshot)
 
   return (
     <Screen preset="auto" contentContainerStyle={$root} safeAreaEdges={["top", "bottom"]}>
