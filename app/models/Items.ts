@@ -3,6 +3,7 @@ interface Item {
     name: string;
     price: number;
     type: string;
+    timestamp: number;
 }
 
 const items: Item[] = []

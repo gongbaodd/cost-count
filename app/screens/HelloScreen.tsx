@@ -8,7 +8,7 @@ import { ItemStore, TypeStore } from "app/models"
 
 interface HelloScreenProps extends AppStackScreenProps<"Hello"> {}
 
-export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_props) {
+export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen({ navigation}) {
   const [content, setContent] = useState("")
   const [worth, setWorth] = useState(0)
   const [worthContent, setWorthContent] = useState("0.00")
@@ -49,19 +49,7 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
         style={$typeButton}
       ></Button>
 
-      <Button
-        text="Add"
-        style={$addButton}
-        preset="filled"
-        onPress={() => {
-          ItemStore.addItem({
-            name: content,
-            price: worth,
-            type: "idle",
-            id: "1",
-          })
-        }}
-      />
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -94,6 +82,31 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen(_
           />
         </View>
       </Modal>
+
+
+      <Button
+        text="Add"
+        style={$addButton}
+        preset="reversed"
+        onPress={() => {
+          ItemStore.addItem({
+            name: content,
+            price: worth,
+            type: "idle",
+            id: "1",
+            timestamp: 0,
+          })
+        }}
+      />
+
+      <Button
+        text="Record"
+        style={$addButton}
+        preset="filled"
+        onPress={() => {
+          navigation.navigate("Record")
+        }}
+      />
     </Screen>
   )
 
