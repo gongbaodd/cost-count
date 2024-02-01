@@ -4,128 +4,13 @@ import { ScrollView, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
 import { Screen, Header, ListView, ListItem, Text } from "app/components"
 import { spacing } from "app/theme"
+import dayjs from "dayjs"
+
+import testRecord from "../../test/records.json"
 
 interface RecordScreenProps extends AppStackScreenProps<"Record"> {}
 
-const years = [
-  "2023",
-  "2024"
-]
-
-const test = [
-  {
-    id: "1",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "2",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "3",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "4",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "5",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "6",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "7",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "8",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "9",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "10",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "11",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "12",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "13",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "14",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "15",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-  {
-    id: "16",
-    name: "text",
-    price: "15.00",
-    type: "food",
-    timestamp: 1500,
-  },
-]
+const data = rawToData(testRecord)
 
 export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScreen({ navigation }) {
   return (
@@ -139,16 +24,56 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
       />
       <ScrollView style={$listView}>
         <ListView
-          data={test}
-          renderItem={({ item }) => (
-            <ListItem
-              text={item.name}
-              key={item.id}
-              LeftComponent={<Text text={item.type} />}
-              RightComponent={<Text text={item.price} />}
-              bottomSeparator
-            />
-          )}
+          data={Object.keys(data)}
+          renderItem={({ item: year, index }) => {
+            return (
+              <>
+                <ListItem text={year} key={`year_${index}`} bottomSeparator />
+                <ListView
+                  data={Object.keys(data[year])}
+                  renderItem={({ item: month, index }) => {
+                    return (
+                      <>
+                        <ListItem
+                          text={dayjs().month(Number(month)).format("MMM")}
+                          key={`month_${index}`}
+                          bottomSeparator
+                        />
+                        <ListView
+                          data={Object.keys(data[year][month])}
+                          renderItem={({item: day, index}) => {
+                            return (
+                            <>
+                              <ListItem
+                                text={day}
+                                key={`day_${index}`}
+                                bottomSeparator
+                              />
+                              <ListView 
+                                data={data[year][month][day]}
+                                renderItem={({item, index}) => {
+                                  return (
+                                    <ListItem
+                                      text={item.name}
+                                      key={`item_${index}`}
+                                      LeftComponent={<Text text={item.type} size="xxs" />}
+                                      RightComponent={<Text text={item.price} />}
+                                      bottomSeparator
+                                    />
+                                  )
+                                }}
+                              />
+                            </>
+                            )
+                          }}
+                        />
+                      </>
+                    )
+                  }}
+                />
+              </>
+            )
+          }}
         />
       </ScrollView>
     </Screen>
@@ -166,4 +91,39 @@ const $listView: ViewStyle = {
   height: "100%",
   width: "100%",
   flex: 1,
+}
+
+interface Item {
+  id: string;
+  name: string;
+  price: string;
+  type: string;
+  timestamp: number;
+}
+
+function rawToData(_data: { date: number; name: string; type: string; price: string }[]) {
+  const data: Record<string, Record<string, Record<string, Item[]>>> = {}
+
+  _data.forEach((d, i) => {
+    const date = dayjs(d.date)
+    const item = { 
+      ...d, 
+      id: i.toString(),
+      date, 
+      timestamp: d.date, 
+      price: Number(d.price).toFixed(2)
+    }
+
+    const year = date.year()
+    const month = date.month()
+    const day = date.date()
+
+    if (!data[year]) data[year] = {}
+    if (!data[year][month]) data[year][month] = {}
+    if (!data[year][month][day]) data[year][month][day] = []
+
+    data[year][month][day].push(item)
+  })
+
+  return data
 }
