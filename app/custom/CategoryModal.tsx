@@ -52,6 +52,7 @@ export const CategoryModal: FC<{
               }
             }}
             data={categories}
+            estimatedItemSize={categories.length * 50}
           />
           <TextField
             placeholder="Add Category"
@@ -101,3 +102,4 @@ const $typeButton: ViewStyle = {
   justifyContent: "flex-start",
   minHeight: spacing.lg,
 }
+

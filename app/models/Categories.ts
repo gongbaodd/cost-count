@@ -1,3 +1,5 @@
+import testRecords from "../../test/records.json"
+
 interface Type {
   name: string,
   id: number
@@ -5,6 +7,7 @@ interface Type {
 
 let types: Type[] = [
     { name: "idle", id: 1 },
+    ...[...getTypes()].map((name, index) => ({ name, id: index + 2 })),
 ]
 let listeners: (() => void)[] = []
 
@@ -29,4 +32,14 @@ export const CategoryStore = {
 
 function emitChange() {
   listeners.forEach((l) => l())
+}
+
+function getTypes() {
+  const typeSet = new Set<string>()
+
+  testRecords.forEach((record) => {
+    typeSet.add(record.type)
+  })
+
+  return typeSet
 }
