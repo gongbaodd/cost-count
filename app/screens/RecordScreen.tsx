@@ -1,18 +1,18 @@
-import React, { FC } from "react"
+import React, { FC, useSyncExternalStore } from "react"
 import { observer } from "mobx-react-lite"
 import { ScrollView, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
 import { Screen, Header, ListView, ListItem, Text } from "app/components"
-import { spacing } from "app/theme"
+import { colors, spacing } from "app/theme"
 import dayjs from "dayjs"
-
-import testRecord from "../../test/records.json"
+import { ItemStore } from "app/models"
 
 interface RecordScreenProps extends AppStackScreenProps<"Record"> {}
 
-const data = rawToData(testRecord)
-
 export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScreen({ navigation }) {
+  const records = useSyncExternalStore(ItemStore.subscribe, ItemStore.getSnapshot)
+  const list = recordsToList(records)
+
   return (
     <Screen preset="fixed" contentContainerStyle={$root}>
       <Header
@@ -24,60 +24,110 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
       />
       <ScrollView style={$listView}>
         <ListView
-          data={Object.keys(data)}
-          renderItem={({ item: year, index }) => {
-            return (
-              <>
-                <ListItem text={year} key={`year_${index}`} bottomSeparator />
-                <ListView
-                  data={Object.keys(data[year])}
-                  renderItem={({ item: month, index }) => {
-                    return (
-                      <>
-                        <ListItem
-                          text={dayjs().month(Number(month)).format("MMM")}
-                          key={`month_${index}`}
-                          bottomSeparator
-                        />
-                        <ListView
-                          data={Object.keys(data[year][month])}
-                          renderItem={({item: day, index}) => {
-                            return (
-                            <>
-                              <ListItem
-                                text={day}
-                                key={`day_${index}`}
-                                bottomSeparator
-                              />
-                              <ListView 
-                                data={data[year][month][day]}
-                                renderItem={({item, index}) => {
-                                  return (
-                                    <ListItem
-                                      text={item.name}
-                                      key={`item_${index}`}
-                                      LeftComponent={<Text text={item.type} size="xxs" />}
-                                      RightComponent={<Text text={item.price} />}
-                                      bottomSeparator
-                                    />
-                                  )
-                                }}
-                              />
-                            </>
-                            )
-                          }}
-                        />
-                      </>
-                    )
-                  }}
+          data={list}
+          renderItem={({ item, index }) => {
+            if (item.list_type === "record") {
+              return (
+                <ListItem
+                  style={$recordItem}
+                  text={item.name}
+                  key={`item_${index}`}
+                  LeftComponent={<Text style={$typeBadge} text={item.type} size="xxs" />}
+                  RightComponent={<Text text={item.price.toFixed(2)} />}
+                  bottomSeparator
                 />
-              </>
-            )
+              )
+            } else {
+              return (
+                <ListItem
+                  text={item.name}
+                  key={`item_${index}`}
+                  RightComponent={<Text text={item.price.toFixed(2)} />}
+                  bottomSeparator
+                />
+              )
+            }
           }}
         />
       </ScrollView>
     </Screen>
   )
+
+  type recordItem = (typeof records)[0] & { list_type: "record" }
+  type dayItem = {
+    list_type: "day"
+    name: string
+    price: number
+  }
+  type monthItem = { list_type: "month"; name: string; price: number }
+  type yearItem = { list_type: "year"; name: string; price: number }
+  type listItem = recordItem | dayItem | monthItem | yearItem
+
+  function recordsToList(record: typeof records) {
+    const list: listItem[] = []
+    const reversed = [...record]
+
+    let lastDay = null
+    let lastMonth = null
+    let lastYear = null
+    
+    let yearSum = 0
+    let monthSum = 0
+    let daySum = 0
+
+    let lastDayItem: null | dayItem = null
+    let lastMonthItem: null | monthItem = null
+    let lastYearItem: null | yearItem = null
+
+    while (reversed.length) {
+      const item = reversed.pop() as recordItem
+      const date = dayjs(item.date)
+
+      const year = date.year()
+      const month = date.month()
+      const day = date.date()
+
+      if (year !== lastYear) {
+        const currYearItem: yearItem = { list_type: "year", name: year.toString(), price: -1 }
+        list.push(currYearItem)
+
+        lastYearItem && (lastYearItem.price = yearSum)
+        lastYearItem = currYearItem
+
+        lastYear = year
+        yearSum = 0
+      }
+
+      if (month !== lastMonth) {
+        const currMonthItem: monthItem = { list_type: "month", name: dayjs().month(month).format("MMM"), price: -1 }
+        list.push(currMonthItem)
+
+        lastMonthItem && (lastMonthItem.price = monthSum)
+        lastMonthItem = currMonthItem
+
+        lastMonth = month
+        monthSum = 0
+      }
+
+      if (day !== lastDay) {
+        const currDayItem: dayItem = { list_type: "day", name: dayjs().date(day).format("DD"), price: -1 }
+        list.push(currDayItem)
+
+        lastDayItem && (lastDayItem.price = daySum)
+        lastDayItem = currDayItem
+
+        lastDay = day
+        daySum = 0
+      }
+
+      list.push({ ...item, list_type: "record" })
+      yearSum += item.price
+      monthSum += item.price
+      daySum += item.price
+    }
+
+    return list
+  }
 })
 
 const $root: ViewStyle = {
@@ -93,37 +143,10 @@ const $listView: ViewStyle = {
   flex: 1,
 }
 
-interface Item {
-  id: string;
-  name: string;
-  price: string;
-  type: string;
-  timestamp: number;
+const $typeBadge: ViewStyle = {
+  width: spacing.xxl
 }
 
-function rawToData(_data: { date: number; name: string; type: string; price: string }[]) {
-  const data: Record<string, Record<string, Record<string, Item[]>>> = {}
-
-  _data.forEach((d, i) => {
-    const date = dayjs(d.date)
-    const item = { 
-      ...d, 
-      id: i.toString(),
-      date, 
-      timestamp: d.date, 
-      price: Number(d.price).toFixed(2)
-    }
-
-    const year = date.year()
-    const month = date.month()
-    const day = date.date()
-
-    if (!data[year]) data[year] = {}
-    if (!data[year][month]) data[year][month] = {}
-    if (!data[year][month][day]) data[year][month][day] = []
-
-    data[year][month][day].push(item)
-  })
-
-  return data
+const $recordItem: ViewStyle = {
+  backgroundColor: colors.palette.neutral100
 }
