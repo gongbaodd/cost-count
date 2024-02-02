@@ -1,17 +1,16 @@
 interface Type {
-  name: string
-  id: string
+  name: string,
+  id: number
 }
 
-const types: Type[] = [
-    { name: "idle", id: "1" },
-    { name: "food", id: "2"},
+let types: Type[] = [
+    { name: "idle", id: 1 },
 ]
 let listeners: (() => void)[] = []
 
 export const CategoryStore = {
-  addCategory: (t: Type) => {
-    types.push(t)
+  addCategory: (t: Omit<Type, "id">) => {
+    types = types.concat({ ...t, id: types.length + 1 })
     emitChange()
   },
   subscribe: (listener: () => void) => {

@@ -58,10 +58,11 @@ export const CategoryModal: FC<{
             value={newCategory}
             onChangeText={setNewCategory}
             RightAccessory={() => {
-             return <Button text="Add" style={$addCategoryButton} onPress={onAddCategoryPress} disabled={!value} />
+             return <Button text="Add" style={$addCategoryButton} onPress={onAddCategoryPress} disabled={!newCategory} />
             
               function onAddCategoryPress() {
-                CategoryStore.addCategory({ id: "3", name: newCategory })
+                console.log("newCategory", newCategory)
+                CategoryStore.addCategory({ name: newCategory })
                 setNewCategory("")
               }
             }}
