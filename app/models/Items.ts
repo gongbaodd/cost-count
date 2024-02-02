@@ -16,8 +16,8 @@ let items: Item[] = testRecords.map((record, index) => ({
 let listeners: (() => void)[] = []
 
 export const ItemStore = {
-  addItem: (item: Item) => {
-    items = items.concat(item)
+  addItem: (item: Omit<Item, "id">) => {
+    items = items.concat({...item, id: items.length + 1})
     emitChange()
   },
   deleteItem: (id: number) => {

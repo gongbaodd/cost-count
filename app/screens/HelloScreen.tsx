@@ -40,9 +40,8 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen({
           ItemStore.addItem({
             name: content,
             price,
-            type: "idle",
-            id: "1",
-            timestamp: 0,
+            type: category,
+            date: +(new Date()),
           })
         }}
       />
