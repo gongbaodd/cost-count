@@ -29,7 +29,7 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
             if (item.list_type === "record") {
               return (
                 <ListItem
-                  style={$recordItem}
+                  style={[$listItem, $recordItem]}
                   text={item.name}
                   key={`item_${index}`}
                   LeftComponent={<Text style={$typeBadge} text={item.type} size="xxs" />}
@@ -40,6 +40,7 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
             } else {
               return (
                 <ListItem
+                  style={$listItem}
                   text={item.name}
                   key={`item_${index}`}
                   RightComponent={<Text text={item.price.toFixed(2)} />}
@@ -137,7 +138,6 @@ const $root: ViewStyle = {
 }
 
 const $listView: ViewStyle = {
-  paddingHorizontal: spacing.lg,
   height: "100%",
   width: "100%",
   flex: 1,
@@ -145,6 +145,11 @@ const $listView: ViewStyle = {
 
 const $typeBadge: ViewStyle = {
   width: spacing.xxl
+}
+
+const $listItem: ViewStyle = {
+  paddingLeft: spacing.lg,
+  paddingRight: spacing.lg
 }
 
 const $recordItem: ViewStyle = {
