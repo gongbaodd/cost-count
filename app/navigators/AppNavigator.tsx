@@ -41,6 +41,7 @@ export type AppStackParamList = {
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
   Hello: undefined 
   Record: undefined
+  Detail: {id: number}
 }
 
 /**
@@ -65,6 +66,7 @@ const AppStack = observer(function AppStack() {
     >
       <Stack.Screen name="Hello" component={Screens.HelloScreen} />
       <Stack.Screen name="Record" component={Screens.RecordScreen} />
+      <Stack.Screen name="Detail" component={Screens.DetailScreen} />
     </Stack.Navigator>
   )
 })

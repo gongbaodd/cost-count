@@ -35,6 +35,7 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
                   LeftComponent={<Text style={$typeBadge} text={item.type} size="xxs" />}
                   RightComponent={<Text text={item.price.toFixed(2)} />}
                   bottomSeparator
+                  onPress={() => { navigation.navigate("Detail", {id: item.id}) }}
                 />
               )
             } else {

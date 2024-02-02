@@ -10,8 +10,11 @@ let listeners: (() => void)[] = []
 
 export const CategoryStore = {
   addCategory: (t: Omit<Type, "id">) => {
-    types = types.concat({ ...t, id: types.length + 1 })
+    const newCategory = { ...t, id: types.length + 1 }
+    types = types.concat(newCategory)
     emitChange()
+
+    return newCategory
   },
   subscribe: (listener: () => void) => {
     listeners.push(listener)

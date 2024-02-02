@@ -1,0 +1,59 @@
+import { Header, Screen, Text, TextField } from "app/components"
+import { CategoryModal } from "app/custom"
+import { ItemStore } from "app/models"
+import { AppStackScreenProps } from "app/navigators"
+import { spacing } from "app/theme"
+import { observer } from "mobx-react-lite"
+import React, { FC, useState } from "react"
+import { View, ViewStyle } from "react-native"
+
+interface DetailScreenProps extends AppStackScreenProps<"Detail"> {}
+
+export const DetailScreen: FC<DetailScreenProps> = observer(function DetailScreen({
+  navigation,
+  route,
+}) {
+  const item = ItemStore.findItem(route.params.id)
+
+  const [category, setCategory] = useState(item?.type || "")
+
+  return (
+    <Screen preset="auto">
+      <Header
+        leftIcon="back"
+        onLeftPress={() => {
+          navigation.goBack()
+        }}
+        title="Detail"
+      />
+      <View style={$root}>
+        <Text style={$price} text={item?.price.toFixed(2)} preset="heading" />
+
+        <View style={$content}>
+          <TextField
+            value={item?.name}
+            autoCorrect={false}
+            autoCapitalize="none"
+            label="Name"
+            placeholder="name"
+          />
+
+          <CategoryModal value={category} setValue={setCategory} />
+        </View>
+      </View>
+    </Screen>
+  )
+})
+
+const $root: ViewStyle = {
+  paddingVertical: spacing.xxl,
+  paddingHorizontal: spacing.lg,
+}
+
+const $price: ViewStyle = {
+  alignSelf: "center",
+}
+
+const $content: ViewStyle = {
+  marginTop: spacing.xxl,
+}

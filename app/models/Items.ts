@@ -17,8 +17,13 @@ let listeners: (() => void)[] = []
 
 export const ItemStore = {
   addItem: (item: Omit<Item, "id">) => {
-    items = items.concat({...item, id: items.length + 1})
+    const newItem = { ...item, id: items.length + 1 }
+    items = items.concat(newItem)
     emitChange()
+    return newItem
+  },
+  findItem: (id: number) => {
+    return items.find((item) => item.id === id)
   },
   deleteItem: (id: number) => {
     const index = items.findIndex((item) => item.id === id)
