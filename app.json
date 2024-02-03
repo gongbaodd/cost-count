@@ -1,10 +1,10 @@
 {
-  "name": "PizzaApp",
-  "displayName": "PizzaApp",
+  "name": "CostCount",
+  "displayName": "CostCount",
   "expo": {
-    "name": "PizzaApp",
-    "slug": "PizzaApp",
-    "scheme": "pizzaapp",
+    "name": "CostCount",
+    "slug": "CostCount",
+    "scheme": "costcount",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon-all.png",
