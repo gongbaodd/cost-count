@@ -129,6 +129,10 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
       daySum += item.price
     }
 
+    lastDayItem && (lastDayItem.price = daySum)
+    lastMonthItem && (lastMonthItem.price = monthSum)
+    lastYearItem && (lastYearItem.price = yearSum)
+
     return list
   }
 })

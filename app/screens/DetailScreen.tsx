@@ -1,4 +1,4 @@
-import { Header, Screen, Text, TextField } from "app/components"
+import { Button, Header, Screen, Text, TextField } from "app/components"
 import { CategoryModal, DateTimePicker } from "app/custom"
 import { ItemStore } from "app/models"
 import { AppStackScreenProps } from "app/navigators"
@@ -6,7 +6,6 @@ import { spacing } from "app/theme"
 import { observer } from "mobx-react-lite"
 import React, { FC, useState } from "react"
 import { View, ViewStyle } from "react-native"
-
 
 interface DetailScreenProps extends AppStackScreenProps<"Detail"> {}
 
@@ -18,7 +17,7 @@ export const DetailScreen: FC<DetailScreenProps> = observer(function DetailScree
 
   const [category, setCategory] = useState(item?.type || "")
 
-  const [date, setDate] = useState(item?.date? new Date(item.date) :(new Date()))
+  const [date, setDate] = useState(item?.date ? new Date(item.date) : new Date())
 
   return (
     <Screen preset="auto">
@@ -43,16 +42,25 @@ export const DetailScreen: FC<DetailScreenProps> = observer(function DetailScree
 
           <CategoryModal value={category} setValue={modifyCategory} />
 
-          <DateTimePicker value={date} setValue={modifyDate}/>
+          <DateTimePicker value={date} setValue={modifyDate} />
+
+          <Button text="Delete" preset="reversed" style={$delete} onPress={deleteItem} />
         </View>
       </View>
     </Screen>
   )
 
+  function deleteItem() {
+    if (!item) return
+
+    ItemStore.deleteItem(item.id)
+    navigation.goBack()
+  }
+
   function modifyDate(value: Date) {
     if (!item) return
 
-    const newItem = { ...item, date: +value, id: undefined}
+    const newItem = { ...item, date: +value, id: undefined }
     delete newItem.id
 
     setDate(value)
@@ -62,7 +70,7 @@ export const DetailScreen: FC<DetailScreenProps> = observer(function DetailScree
   function modifyCategory(value: string) {
     if (!item) return
 
-    const newItem = { ...item, type: value, id: undefined}
+    const newItem = { ...item, type: value, id: undefined }
     delete newItem.id
 
     setCategory(value)
@@ -81,4 +89,8 @@ const $price: ViewStyle = {
 
 const $content: ViewStyle = {
   marginTop: spacing.xxl,
+}
+
+const $delete: ViewStyle = {
+  marginTop: spacing.xl,
 }

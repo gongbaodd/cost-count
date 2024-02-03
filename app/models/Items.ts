@@ -1,4 +1,3 @@
-import testRecords from "../../test/records.json"
 import * as storage from "../utils/storage"
 
 interface Item {
@@ -12,11 +11,13 @@ interface Item {
 const KEY = "RECORD_ITEMS"
 loadItems()
 
-let items: Item[] = testRecords.map((record, index) => ({
-  ...record,
-  price: Number(record.price),
-  id: index + 1,
-}))
+let items: Item[] = []
+
+// testRecords.map((record, index) => ({
+//   ...record,
+//   price: Number(record.price),
+//   id: index + 1,
+// }))
 let listeners: (() => void)[] = []
 
 export const ItemStore = {
@@ -45,10 +46,12 @@ export const ItemStore = {
       emitChange()
     }
   },
-  deleteItem: (id: number) => {
+  deleteItem: async (id: number) => {
     const index = items.findIndex((item) => item.id === id)
     if (index !== -1) {
       items = [...items.slice(0, index), ...items.slice(index + 1)]
+
+      await storage.save(KEY, items)
       emitChange()
     }
   },
@@ -69,6 +72,6 @@ function emitChange() {
 
 async function loadItems() {
   const data = await storage.load(KEY) as Item[] | null
-  // items = data ?? items
+  items = data ?? items
   emitChange()
 }
