@@ -25,6 +25,17 @@ export const ItemStore = {
   findItem: (id: number) => {
     return items.find((item) => item.id === id)
   },
+  modifyItem: (id: number, item: Omit<Item, "id">) => {
+    const index = items.findIndex((item) => item.id === id)
+    if (index !== -1) {
+      items = [
+        ...items.slice(0, index),
+        { ...item, id },
+        ...items.slice(index + 1),
+      ].sort((a, b) => a.date - b.date)
+      emitChange()
+    }
+  },
   deleteItem: (id: number) => {
     const index = items.findIndex((item) => item.id === id)
     if (index !== -1) {
