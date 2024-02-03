@@ -22,7 +22,7 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
         }}
         title="Records"
       />
-      <ScrollView style={$listView}>
+      {records.length > 0 && <ScrollView style={$listView}>
         <ListView
           data={list}
           estimatedItemSize={list.length * 50}
@@ -52,7 +52,7 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
             }
           }}
         />
-      </ScrollView>
+      </ScrollView>}
     </Screen>
   )
 
