@@ -3,7 +3,7 @@ import React, { FC, useState } from "react"
 import Dtp, { DateTimePickerEvent } from "@react-native-community/datetimepicker"
 import dayjs from "dayjs"
 import { spacing } from "app/theme"
-import { ViewStyle } from "react-native"
+import { ViewStyle, Platform } from "react-native"
 
 interface DateTimePickerProps {
   value: Date
@@ -13,13 +13,20 @@ interface DateTimePickerProps {
 export const DateTimePicker: FC<DateTimePickerProps> = ({ value, setValue }) => {
   const [visible, setVisible] = useState(false)
   const date = dayjs(value).format("YYYY-MM-DD")
-  return (
-    <>
-      <Text text="Date" preset="formLabel" />
-      <Button text={date} style={$dateButton} onPress={onDateButtonPress} />
-      {visible && <Dtp value={new Date(value)} onChange={onChange} onTouchCancel={onTouchCancel} />}
-    </>
-  )
+
+  if (Platform.OS === "ios" || Platform.OS === "android") {
+    return (
+      <>
+        <Text text="Date" preset="formLabel" />
+        <Button text={date} style={$dateButton} onPress={onDateButtonPress} />
+        {visible && (
+          <Dtp value={new Date(value)} onChange={onChange} onTouchCancel={onTouchCancel} />
+        )}
+      </>
+    )
+  }
+
+  return null
 
   function onDateButtonPress() {
     setVisible(true)
@@ -28,7 +35,7 @@ export const DateTimePicker: FC<DateTimePickerProps> = ({ value, setValue }) => 
   function onChange(event: DateTimePickerEvent, date?: Date) {
     setVisible(false)
     if (date) {
-        setValue(date)
+      setValue(date)
     }
   }
 
@@ -38,8 +45,7 @@ export const DateTimePicker: FC<DateTimePickerProps> = ({ value, setValue }) => 
 }
 
 const $dateButton: ViewStyle = {
-    marginTop: spacing.xs,
-    justifyContent: "flex-start",
-    minHeight: spacing.lg,
-  }
-  
+  marginTop: spacing.xs,
+  justifyContent: "flex-start",
+  minHeight: spacing.lg,
+}

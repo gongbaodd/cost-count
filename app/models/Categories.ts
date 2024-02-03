@@ -1,20 +1,26 @@
-import testRecords from "../../test/records.json"
+import * as Storage from "../utils/storage"
 
 interface Type {
   name: string,
   id: number
 }
 
+const KEY = "RECORD_TYPES"
+
 let types: Type[] = [
     { name: "idle", id: 1 },
-    ...[...getTypes()].map((name, index) => ({ name, id: index + 2 })),
 ]
 let listeners: (() => void)[] = []
 
+loadCategories()
+
 export const CategoryStore = {
-  addCategory: (t: Omit<Type, "id">) => {
+  addCategory: async (t: Omit<Type, "id">) => {
     const newCategory = { ...t, id: types.length + 1 }
     types = types.concat(newCategory)
+
+    await Storage.save(KEY, types)
+
     emitChange()
 
     return newCategory
@@ -34,12 +40,8 @@ function emitChange() {
   listeners.forEach((l) => l())
 }
 
-function getTypes() {
-  const typeSet = new Set<string>()
-
-  testRecords.forEach((record) => {
-    typeSet.add(record.type)
-  })
-
-  return typeSet
+async function loadCategories() {
+  const data = await Storage.load(KEY) as Type[] | null
+  types = data ?? types
+  emitChange()
 }

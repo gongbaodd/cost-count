@@ -41,7 +41,7 @@ export const DetailScreen: FC<DetailScreenProps> = observer(function DetailScree
             placeholder="name"
           />
 
-          <CategoryModal value={category} setValue={setCategory} />
+          <CategoryModal value={category} setValue={modifyCategory} />
 
           <DateTimePicker value={date} setValue={modifyDate}/>
         </View>
@@ -56,6 +56,16 @@ export const DetailScreen: FC<DetailScreenProps> = observer(function DetailScree
     delete newItem.id
 
     setDate(value)
+    ItemStore.modifyItem(item.id, newItem)
+  }
+
+  function modifyCategory(value: string) {
+    if (!item) return
+
+    const newItem = { ...item, type: value, id: undefined}
+    delete newItem.id
+
+    setCategory(value)
     ItemStore.modifyItem(item.id, newItem)
   }
 })

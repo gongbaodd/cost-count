@@ -1,4 +1,5 @@
 import testRecords from "../../test/records.json"
+import * as storage from "../utils/storage"
 
 interface Item {
   id: number
@@ -8,6 +9,9 @@ interface Item {
   date: number
 }
 
+const KEY = "RECORD_ITEMS"
+loadItems()
+
 let items: Item[] = testRecords.map((record, index) => ({
   ...record,
   price: Number(record.price),
@@ -16,16 +20,19 @@ let items: Item[] = testRecords.map((record, index) => ({
 let listeners: (() => void)[] = []
 
 export const ItemStore = {
-  addItem: (item: Omit<Item, "id">) => {
+  addItem: async (item: Omit<Item, "id">) => {
     const newItem = { ...item, id: items.length + 1 }
     items = items.concat(newItem)
+
+    await storage.save(KEY, items)
+
     emitChange()
     return newItem
   },
   findItem: (id: number) => {
     return items.find((item) => item.id === id)
   },
-  modifyItem: (id: number, item: Omit<Item, "id">) => {
+  modifyItem: async (id: number, item: Omit<Item, "id">) => {
     const index = items.findIndex((item) => item.id === id)
     if (index !== -1) {
       items = [
@@ -33,6 +40,8 @@ export const ItemStore = {
         { ...item, id },
         ...items.slice(index + 1),
       ].sort((a, b) => a.date - b.date)
+
+      await storage.save(KEY, items)
       emitChange()
     }
   },
@@ -56,4 +65,10 @@ export const ItemStore = {
 
 function emitChange() {
   listeners.forEach((l) => l())
+}
+
+async function loadItems() {
+  const data = await storage.load(KEY) as Item[] | null
+  // items = data ?? items
+  emitChange()
 }
