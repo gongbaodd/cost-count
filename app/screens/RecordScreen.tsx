@@ -25,6 +25,7 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
       <ScrollView style={$listView}>
         <ListView
           data={list}
+          estimatedItemSize={list.length * 50}
           renderItem={({ item, index }) => {
             if (item.list_type === "record") {
               return (
