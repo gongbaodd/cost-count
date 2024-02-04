@@ -29,6 +29,10 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen({
     navigation.navigate("Detail", { id })
   }, [content, price, category, navigation])
 
+  const onRecordPressed = useCallback(() => {
+    navigation.navigate("Record")
+  }, [])
+
   useSyncExternalStore(ItemStore.subscribe, ItemStore.getSnapshot)
 
   return (
@@ -58,13 +62,10 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen({
         text="Record"
         style={$addButton}
         preset="filled"
-        onPress={() => {
-          navigation.navigate("Record")
-        }}
+        onPress={onRecordPressed}
       />
     </Screen>
   )
-
 })
 
 const $root: ViewStyle = {
