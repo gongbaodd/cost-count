@@ -1,4 +1,4 @@
-import React, { FC, useState, useSyncExternalStore } from "react"
+import React, { FC, useCallback, useState, useSyncExternalStore } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, Image, ImageStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
@@ -15,6 +15,19 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen({
   const [content, setContent] = useState("")
   const [price, setPrice] = useState(0)
   const [category, setCategory] = useState("")
+
+  const onAddPressed = useCallback(async () => {
+    if (!content) return 
+
+    const {id} = await ItemStore.addItem({
+      name: content,
+      price,
+      type: category,
+      date: +(new Date()),
+    })
+
+    navigation.navigate("Detail", { id })
+  }, [content, price, category, navigation])
 
   useSyncExternalStore(ItemStore.subscribe, ItemStore.getSnapshot)
 
@@ -38,14 +51,7 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen({
         text="Add"
         style={$addButton}
         preset="reversed"
-        onPress={() => {
-          ItemStore.addItem({
-            name: content,
-            price,
-            type: category,
-            date: +(new Date()),
-          })
-        }}
+        onPress={onAddPressed}
       />
 
       <Button
