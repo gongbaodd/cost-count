@@ -1,6 +1,10 @@
 import { createSchema, createYoga } from "graphql-yoga"
+import jwt from "@tsndr/cloudflare-worker-jwt"
+import { useJWT } from "@graphql-yoga/plugin-jwt"
+
 export interface Env {
 	kv: KVNamespace;
+	SINING_KEY: string;
 }
 
 interface Record {
@@ -14,6 +18,12 @@ interface Record {
 interface Category {
 	id: string;
 	name: string;
+}
+
+interface User {
+	id: string;
+	email: string;
+	hash: string;
 }
 
 const yoga = createYoga({
@@ -30,6 +40,11 @@ const yoga = createYoga({
 				id: ID!
 				name: String!
 			}
+			type User {
+				id: ID!
+				email: String!
+				token: String!
+			}
 			type Query {
 				records: [Record]
 				record(id: String!): Record
@@ -40,6 +55,8 @@ const yoga = createYoga({
 				addRecord(name: String!, price: Float!, type: ID!, date: Int): Record
 				mutRecord(id: ID!, name: String, price: Float, type: ID, date: Int): Record
 				delRecord(id: ID!): Record
+				register(email: String!, password: String!): User
+				login(email: String!, password: String!): User
 			}
 		`,
 		resolvers: {
@@ -107,9 +124,23 @@ const yoga = createYoga({
 					}
 					await ctx.kv.put('records', JSON.stringify(records.filter(record => record.id !== id)));
 					return record;
+				},
+				register: async (_src, { email, password }: { email: string, password: string }, ctx: Env) => {
+					const users = await ctx.kv.get('users', 'json') as User[] ?? [];
+					if (users.find(user => user.email === email)) {
+						throw new Error('User already exists');
+					}
+					const id = crypto.randomUUID();
+					const token = jwt.sign({ id }, ctx.SINING_KEY);
+					const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
+					const hash = btoa(String.fromCharCode(...new Uint8Array(hashBuffer)));
+					
+					users.push({ id, email, hash });
+					await ctx.kv.put('users', JSON.stringify(users));
+					return { id, email, token };
 				}
 			},
-		}
+		},
 	}),
 	graphiql: true,
 })
