@@ -1,32 +1,119 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
-
+import { createSchema, createYoga } from "graphql-yoga"
 export interface Env {
-	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-	// MY_KV_NAMESPACE: KVNamespace;
-	//
-	// Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
-	// MY_DURABLE_OBJECT: DurableObjectNamespace;
-	//
-	// Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
-	// MY_BUCKET: R2Bucket;
-	//
-	// Example binding to a Service. Learn more at https://developers.cloudflare.com/workers/runtime-apis/service-bindings/
-	// MY_SERVICE: Fetcher;
-	//
-	// Example binding to a Queue. Learn more at https://developers.cloudflare.com/queues/javascript-apis/
-	// MY_QUEUE: Queue;
+	kv: KVNamespace;
 }
 
+interface Record {
+	id: string;
+	name: string;
+	price: number;
+	type: string;
+	date: number;
+}
+
+interface Category {
+	id: string;
+	name: string;
+}
+
+const yoga = createYoga({
+	schema: createSchema({
+		typeDefs: `#graphql
+			type Record {
+				id: ID!
+				name: String!
+				price: Float!
+				type: String!
+				date: Float!
+			}
+			type Category {
+				id: ID!
+				name: String!
+			}
+			type Query {
+				records: [Record]
+				record(id: String!): Record
+				categories: [Category]
+			}
+			type Mutation {
+				addCategory(name: String!): Category
+				addRecord(name: String!, price: Float!, type: ID!, date: Int): Record
+				mutRecord(id: ID!, name: String, price: Float, type: ID, date: Int): Record
+				delRecord(id: ID!): Record
+			}
+		`,
+		resolvers: {
+			Record: {
+				type: async (record: Record, _args, ctx: Env) => {
+					const categories = await ctx.kv.get('categories', 'json') as Category[] ?? [];
+					return categories.find(category => category.id === record.type)?.name ?? 'idle';
+				}
+			},
+			Query: {
+				records: async (_src, _args, ctx: Env) => {
+					const records = await ctx.kv.get('records', 'json') as Record[] ?? [];
+					return records;
+				},
+				record: async (_src, { id }: { id: string }, ctx: Env) => {
+					const records = await ctx.kv.get('records', 'json') as Record[] ?? [];
+					return records.find(record => record.id === id);
+				},
+				categories: async (_src, _args, ctx: Env) => {
+					const categories = await ctx.kv.get('categories', 'json') as Category[] ?? [];
+					return categories;
+				},
+			},
+			Mutation: {
+				addCategory: async (_src, { name }: { name: string }, ctx: Env) => {
+					const categories = await ctx.kv.get('categories', 'json') as Category[] ?? [];
+					const id = crypto.randomUUID()
+					categories.push({ id, name });
+					await ctx.kv.put('categories', JSON.stringify(categories));
+					return { id, name };
+				},
+				addRecord: async (_src, { name, price, type, date }: { name: string, price: number, type: string, date: number }, ctx: Env) => {
+					const records = await ctx.kv.get('records', 'json') as Record[] ?? [];
+					const id = crypto.randomUUID();
+					records.push({ id, name, price, type, date: date ?? +Date.now()});
+					await ctx.kv.put('records', JSON.stringify(records));
+					return { id, name, price, type, date };
+				},
+				mutRecord: async (_src, { id, name, price, type, date }: { id: string, name?: string, price?: number, type?: string, date?: number }, ctx: Env) => {
+					const records = await ctx.kv.get('records', 'json') as Record[] ?? [];
+					const record = records.find(record => record.id === id);
+					if (!record) {
+						throw new Error('Record not found');
+					}
+					if (name) {
+						record.name = name;
+					}
+					if (price) {
+						record.price = price;
+					}
+					if (type) {
+						record.type = type;
+					}
+					if (date) {
+						record.date = date;
+					}
+					await ctx.kv.put('records', JSON.stringify(records));
+					return record;
+				},
+				delRecord: async (_src, { id }: { id: string }, ctx: Env) => {
+					const records = await ctx.kv.get('records', 'json') as Record[] ?? [];
+					const record = records.find(record => record.id === id);
+					if (!record) {
+						throw new Error('Record not found');
+					}
+					await ctx.kv.put('records', JSON.stringify(records.filter(record => record.id !== id)));
+					return record;
+				}
+			},
+		}
+	}),
+	graphiql: true,
+})
+
 export default {
-	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('Hello World!');
-	},
+	fetch: yoga.fetch,
 };
