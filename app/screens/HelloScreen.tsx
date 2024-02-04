@@ -1,11 +1,13 @@
 import React, { FC, useState, useSyncExternalStore } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle } from "react-native"
+import { ViewStyle, Image, ImageStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Button, Screen, Text, TextField } from "app/components"
+import { Button, Screen, TextField } from "app/components"
 import { spacing } from "app/theme"
 import { ItemStore } from "app/models"
 import { CategoryModal, PriceTextField } from "app/custom"
+
+const logo = require("../../assets/images/logo.png")
 
 interface HelloScreenProps extends AppStackScreenProps<"Hello"> {}
 
@@ -18,7 +20,7 @@ export const HelloScreen: FC<HelloScreenProps> = observer(function HelloScreen({
 
   return (
     <Screen preset="auto" contentContainerStyle={$root} safeAreaEdges={["top", "bottom"]}>
-      <Text text="Expense Tracker" preset="heading" />
+      <Image source={logo} resizeMode="contain" style={$logo} />
       <TextField
         value={content}
         autoCorrect={false}
@@ -68,4 +70,9 @@ const $addButton: ViewStyle = {
   marginTop: spacing.xl,
 }
 
+const $logo: ImageStyle = {
+  height: 128,
+  width: "100%",
+  marginBottom: spacing.xxl,
+}
 

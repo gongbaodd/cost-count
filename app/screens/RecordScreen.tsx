@@ -2,7 +2,7 @@ import React, { FC, useSyncExternalStore } from "react"
 import { observer } from "mobx-react-lite"
 import { ScrollView, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Screen, Header, ListView, ListItem, Text } from "app/components"
+import { Screen, Header, ListView, ListItem, Text, EmptyState } from "app/components"
 import { colors, spacing } from "app/theme"
 import dayjs from "dayjs"
 import { ItemStore } from "app/models"
@@ -53,6 +53,7 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
           }}
         />
       </ScrollView>}
+      {records.length === 0 && <EmptyState style={$empty} buttonOnPress={() => navigation.goBack()}/>}
     </Screen>
   )
 
@@ -160,4 +161,11 @@ const $listItem: ViewStyle = {
 
 const $recordItem: ViewStyle = {
   backgroundColor: colors.palette.neutral100
+}
+
+const $empty: ViewStyle = {
+  flex: 1,
+  paddingLeft: spacing.lg,
+  paddingRight: spacing.lg,
+  paddingTop: spacing.xxxl
 }
