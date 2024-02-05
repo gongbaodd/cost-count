@@ -1,6 +1,7 @@
 import { createSchema, createYoga } from "graphql-yoga"
 import jwt from "@tsndr/cloudflare-worker-jwt"
 import { GraphQLError } from "graphql";
+import { UUIDDefinition, UUIDResolver, TimestampTypeDefinition, TimestampResolver, EmailAddressTypeDefinition, EmailAddressResolver } from "graphql-scalars"
 
 export interface Env {
 	kv: KVNamespace;
@@ -30,20 +31,23 @@ interface User {
 const yoga = createYoga({
 	schema: createSchema({
 		typeDefs: `#graphql
+			${UUIDDefinition}
+			${TimestampTypeDefinition}
+			${EmailAddressTypeDefinition}
 			type Record {
-				id: ID!
+				id: UUID!
 				name: String!
 				price: Float!
-				type: String!
-				date: Float!
+				type: UUID!
+				date: Timestamp!
 			}
 			type Category {
-				id: ID!
+				id: UUID!
 				name: String!
 			}
 			type User {
-				id: ID!
-				email: String!
+				id: UUID!
+				email: EmailAddress!
 				token: String!
 			}
 			type Query {
@@ -53,14 +57,17 @@ const yoga = createYoga({
 			}
 			type Mutation {
 				addCategory(name: String!): Category
-				addRecord(name: String!, price: Float!, type: ID!, date: Int): Record
-				mutRecord(id: ID!, name: String, price: Float, type: ID, date: Int): Record
-				delRecord(id: ID!): Record
-				register(email: String!, password: String!): User
-				login(email: String!, password: String!): User
+				addRecord(name: String!, price: Float!, type: UUID!, date: Timestamp): Record
+				mutRecord(id: UUID!, name: String, price: Float, type: UUID, date: Timestamp): Record
+				delRecord(id: UUID!): Record
+				register(email: EmailAddress!, password: String!): User
+				login(email: EmailAddress!, password: String!): User
 			}
 		`,
 		resolvers: {
+			UUID: UUIDResolver,
+			Timestamp: TimestampResolver,
+			EmailAddress: EmailAddressResolver,
 			Record: {
 				type: async (record: Record, _args, ctx: Env) => {
 					const { id } = await getToken(ctx)
@@ -165,7 +172,7 @@ const yoga = createYoga({
 				},
 				login: async (_src, { email, password }: { email: string, password: string }, ctx: Env) => {
 					const key = 'users';
-					
+
 					const users = await ctx.kv.get(key, 'json') as User[] ?? [];
 					const user = users.find(user => user.email === email);
 					if (!user) {

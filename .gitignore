@@ -86,3 +86,4 @@ web-build/
 !env.js
 
 /coverage
+/test/input.js

@@ -2,751 +2,751 @@
     {
         "date": 1702746000000,
         "name": "住宿",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "1773.9"
     },
     {
         "date": 1702746000000,
         "name": "机场快线",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "45"
     },
     {
         "date": 1702746000000,
         "name": "BTS",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "32"
     },
     {
         "date": 1702746000000,
         "name": "MRT",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "19"
     },
     {
         "date": 1702746000000,
         "name": "starbucks",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "145"
     },
     {
         "date": 1702746000000,
         "name": "mixue",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "15"
     },
     {
         "date": 1702746000000,
         "name": "Mcdonald",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "205"
     },
     {
         "date": 1702746000000,
         "name": "Tooth paste etc.",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "107"
     },
     {
         "date": 1702746000000,
         "name": "SIM card",
-        "type": "network",
+        "type": "fc5cf12e-f8d9-4994-af99-e46a8ec84044",
         "price": "350"
     },
     {
         "date": 1702746000000,
         "name": "MRT",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "26"
     },
     {
         "date": 1702832400000,
         "name": "711-breakfast",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "63"
     },
     {
         "date": 1702832400000,
         "name": "MRT",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "29"
     },
     {
         "date": 1702832400000,
         "name": "711-supper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "69"
     },
     {
         "date": 1702832400000,
         "name": "fruit",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "150"
     },
     {
         "date": 1702832400000,
         "name": "21-terminal-lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "92"
     },
     {
         "date": 1702918800000,
         "name": "711-breakfast",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "69"
     },
     {
         "date": 1702918800000,
         "name": "21-terminal-lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "32"
     },
     {
         "date": 1702918800000,
         "name": "21-terminal-drinks",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "25"
     },
     {
         "date": 1702918800000,
         "name": "711-water",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "29"
     },
     {
         "date": 1702918800000,
         "name": "boat",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "5"
     },
     {
         "date": 1702918800000,
         "name": "711-burger",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "29"
     },
     {
         "date": 1702918800000,
         "name": "noodles",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "69"
     },
     {
         "date": 1703005200000,
         "name": "711-breakfast",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "37"
     },
     {
         "date": 1703005200000,
         "name": "MRT",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "33"
     },
     {
         "date": 1703005200000,
         "name": "711-lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "85"
     },
     {
         "date": 1703005200000,
         "name": "supper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "168"
     },
     {
         "date": 1703005200000,
         "name": "supper+",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "36"
     },
     {
         "date": 1703005200000,
         "name": "MRT",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "26"
     },
     {
         "date": 1703091600000,
         "name": "breakfast",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "65"
     },
     {
         "date": 1703091600000,
         "name": "water",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "37"
     },
     {
         "date": 1703091600000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "54"
     },
     {
         "date": 1703091600000,
         "name": "supper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "54"
     },
     {
         "date": 1703091600000,
         "name": "water",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "39"
     },
     {
         "date": 1703091600000,
         "name": "water",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "15"
     },
     {
         "date": 1703091600000,
         "name": "gym",
-        "type": "gym",
+        "type": "05dec57f-e43e-41c5-97ce-576b16ffb6b1",
         "price": "30"
     },
     {
         "date": 1703091600000,
         "name": "MRT",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "38"
     },
     {
         "date": 1703178000000,
         "name": "breakfast",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "62"
     },
     {
         "date": 1703178000000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "127"
     },
     {
         "date": 1703178000000,
         "name": "prep",
-        "type": "sex",
+        "type": "d2501552-12e3-4aa9-8fbd-f963e96c4793",
         "price": "8900"
     },
     {
         "date": 1703178000000,
         "name": "supper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "100"
     },
     {
         "date": 1703178000000,
         "name": "supper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "38"
     },
     {
         "date": 1703178000000,
         "name": "room-22-27",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "1867"
     },
     {
         "date": 1703264400000,
         "name": "breakfast",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "60"
     },
     {
         "date": 1703264400000,
         "name": "milk",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "20"
     },
     {
         "date": 1703264400000,
         "name": "MRT",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "26"
     },
     {
         "date": 1703264400000,
         "name": "MRT",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "26"
     },
     {
         "date": 1703264400000,
         "name": "snacks",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "30"
     },
     {
         "date": 1703264400000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "39"
     },
     {
         "date": 1703264400000,
         "name": "fruit",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "20"
     },
     {
         "date": 1703264400000,
         "name": "snacks",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "40"
     },
     {
         "date": 1703264400000,
         "name": "驱蚊水",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "75"
     },
     {
         "date": 1703264400000,
         "name": "milk",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "12.5"
     },
     {
         "date": 1703264400000,
         "name": "sidegra",
-        "type": "sex",
+        "type": "d2501552-12e3-4aa9-8fbd-f963e96c4793",
         "price": "200"
     },
     {
         "date": 1703264400000,
         "name": "r3",
-        "type": "sex",
+        "type": "d2501552-12e3-4aa9-8fbd-f963e96c4793",
         "price": "320"
     },
     {
         "date": 1703264400000,
         "name": "夜宵",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "60"
     },
     {
         "date": 1703350800000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "45"
     },
     {
         "date": 1703350800000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "12"
     },
     {
         "date": 1703350800000,
         "name": "beverages",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "22"
     },
     {
         "date": 1703350800000,
         "name": "supper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "100"
     },
     {
         "date": 1703350800000,
         "name": "fruit",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "95"
     },
     {
         "date": 1703437200000,
         "name": "mrt",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "29"
     },
     {
         "date": 1703437200000,
         "name": "mrt",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "19"
     },
     {
         "date": 1703437200000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "51"
     },
     {
         "date": 1703437200000,
         "name": "beverage",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "44"
     },
     {
         "date": 1703437200000,
         "name": "beverage",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "12.5"
     },
     {
         "date": 1703437200000,
         "name": "sapper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "61.75"
     },
     {
         "date": 1703437200000,
         "name": "sapper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "99"
     },
     {
         "date": 1703437200000,
         "name": "beverage",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "12.75"
     },
     {
         "date": 1703523600000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "94"
     },
     {
         "date": 1703523600000,
         "name": "fruit",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "20"
     },
     {
         "date": 1703523600000,
         "name": "coffee",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "115"
     },
     {
         "date": 1703523600000,
         "name": "sapper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "92.25"
     },
     {
         "date": 1703523600000,
         "name": "beverage",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "18"
     },
     {
         "date": 1703523600000,
         "name": "supper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "51.75"
     },
     {
         "date": 1703610000000,
         "name": "mrt",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "29"
     },
     {
         "date": 1703610000000,
         "name": "bedings",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "370"
     },
     {
         "date": 1703610000000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "20"
     },
     {
         "date": 1703610000000,
         "name": "cooking",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "972.75"
     },
     {
         "date": 1703610000000,
         "name": "supper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "169"
     },
     {
         "date": 1703610000000,
         "name": "beverage",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "15"
     },
     {
         "date": 1703610000000,
         "name": "dinnerware",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "174"
     },
     {
         "date": 1703610000000,
         "name": "rent",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "13000"
     },
     {
         "date": 1703610000000,
         "name": "rent deposit",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "26000"
     },
     {
         "date": 1703610000000,
         "name": "beverage",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "65"
     },
     {
         "date": 1703696400000,
         "name": "breakfast",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "57.75"
     },
     {
         "date": 1703696400000,
         "name": "towel",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "842.25"
     },
     {
         "date": 1703696400000,
         "name": "sheets",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "387.7"
     },
     {
         "date": 1703696400000,
         "name": "medicine",
-        "type": "hospital",
+        "type": "a5613afe-200d-46c6-88f9-ea365b77214f",
         "price": "72"
     },
     {
         "date": 1703696400000,
         "name": "swim glasses",
-        "type": "gym",
+        "type": "05dec57f-e43e-41c5-97ce-576b16ffb6b1",
         "price": "100"
     },
     {
         "date": 1703696400000,
         "name": "watermelon",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "36.75"
     },
     {
         "date": 1703696400000,
         "name": "Chinese seasoning",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "239"
     },
     {
         "date": 1703782800000,
         "name": "mask",
-        "type": "hospital",
+        "type": "a5613afe-200d-46c6-88f9-ea365b77214f",
         "price": "49"
     },
     {
         "date": 1703782800000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "185"
     },
     {
         "date": 1703782800000,
         "name": "cooking",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "1183"
     },
     {
         "date": 1703782800000,
         "name": "supper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "74"
     },
     {
         "date": 1703782800000,
         "name": "bathroom",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "578"
     },
     {
         "date": 1703782800000,
         "name": "air conditioning",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "45"
     },
     {
         "date": 1703782800000,
         "name": "water bed",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "463.75"
     },
     {
         "date": 1703869200000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "95"
     },
     {
         "date": 1703869200000,
         "name": "washing tool mosquito",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "407"
     },
     {
         "date": 1703869200000,
         "name": "tonki ali",
-        "type": "gym",
+        "type": "05dec57f-e43e-41c5-97ce-576b16ffb6b1",
         "price": "163"
     },
     {
         "date": 1703869200000,
         "name": "vitamine",
-        "type": "gym",
+        "type": "05dec57f-e43e-41c5-97ce-576b16ffb6b1",
         "price": "321.24"
     },
     {
         "date": 1703869200000,
         "name": "beverage",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "23"
     },
     {
         "date": 1703869200000,
         "name": "supper",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "120"
     },
     {
         "date": 1703869200000,
         "name": "fruit eggs",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "250.25"
     },
     {
         "date": 1703955600000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "115"
     },
     {
         "date": 1703955600000,
         "name": "dumplings",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "835"
     },
     {
         "date": 1703955600000,
         "name": "outlet",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "113"
     },
     {
         "date": 1703955600000,
         "name": "cr2032",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "39"
     },
     {
         "date": 1704042000000,
         "name": "razor",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "59"
     },
     {
         "date": 1704042000000,
         "name": "harmonica",
-        "type": "entertain",
+        "type": "9560c594-f539-4d43-91db-80ff59fb47d1",
         "price": "1309"
     },
     {
         "date": 1704042000000,
         "name": "clothes",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "259"
     },
     {
         "date": 1704042000000,
         "name": "fruits",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "100"
     },
     {
         "date": 1704042000000,
         "name": "bando",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "118"
     },
     {
         "date": 1704042000000,
         "name": "raman",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "199"
     },
     {
         "date": 1704042000000,
         "name": "bandang",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "156"
     },
     {
         "date": 1704128400000,
         "name": "water",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "13"
     },
     {
         "date": 1704128400000,
         "name": "MRT",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "29"
     },
     {
         "date": 1704128400000,
         "name": "dinner",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "78"
     },
     {
         "date": 1704128400000,
         "name": "coffee milk shampoo",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "459.5"
     },
     {
         "date": 1704128400000,
         "name": "MRT",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "29"
     },
     {
         "date": 1704214800000,
         "name": "tuition",
-        "type": "study",
+        "type": "de9b2039-c8df-4c86-b42e-18d7a50a5723",
         "price": "32000"
     },
     {
         "date": 1704214800000,
         "name": "beverage",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "40"
     },
     {
         "date": 1704214800000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "272"
     },
     {
         "date": 1704301200000,
         "name": "bts",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "32"
     },
     {
@@ -758,355 +758,355 @@
     {
         "date": 1704301200000,
         "name": "fruits",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "337.25"
     },
     {
         "date": 1704301200000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "32"
     },
     {
         "date": 1704301200000,
         "name": "beverage",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "30"
     },
     {
         "date": 1704301200000,
         "name": "poppers",
-        "type": "sex",
+        "type": "d2501552-12e3-4aa9-8fbd-f963e96c4793",
         "price": "500"
     },
     {
         "date": 1704301200000,
         "name": "condom",
-        "type": "sex",
+        "type": "d2501552-12e3-4aa9-8fbd-f963e96c4793",
         "price": "143"
     },
     {
         "date": 1704301200000,
         "name": "R3 sauna",
-        "type": "sex",
+        "type": "d2501552-12e3-4aa9-8fbd-f963e96c4793",
         "price": "280"
     },
     {
         "date": 1704387600000,
         "name": "bando",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "258"
     },
     {
         "date": 1704387600000,
         "name": "bag",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "127"
     },
     {
         "date": 1704387600000,
         "name": "tattoo gun",
-        "type": "entertain",
+        "type": "9560c594-f539-4d43-91db-80ff59fb47d1",
         "price": "1474"
     },
     {
         "date": 1704474000000,
         "name": "dianabol",
-        "type": "gym",
+        "type": "05dec57f-e43e-41c5-97ce-576b16ffb6b1",
         "price": "605"
     },
     {
         "date": 1704474000000,
         "name": "liver detox",
-        "type": "gym",
+        "type": "05dec57f-e43e-41c5-97ce-576b16ffb6b1",
         "price": "628"
     },
     {
         "date": 1704474000000,
         "name": "novadex",
-        "type": "gym",
+        "type": "05dec57f-e43e-41c5-97ce-576b16ffb6b1",
         "price": "917"
     },
     {
         "date": 1704474000000,
         "name": "cooling mat",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "173"
     },
     {
         "date": 1704474000000,
         "name": "dinner",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "50"
     },
     {
         "date": 1704474000000,
         "name": "fruit beverage",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "228.5"
     },
     {
         "date": 1704474000000,
         "name": "bando",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "337"
     },
     {
         "date": 1704560400000,
         "name": "fruits",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "179.75"
     },
     {
         "date": 1704560400000,
         "name": "hdmi",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "450"
     },
     {
         "date": 1704646800000,
         "name": "data",
-        "type": "network",
+        "type": "fc5cf12e-f8d9-4994-af99-e46a8ec84044",
         "price": "50"
     },
     {
         "date": 1704646800000,
         "name": "quest3 usb",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "190"
     },
     {
         "date": 1704646800000,
         "name": "bathroom washer",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "70"
     },
     {
         "date": 1704646800000,
         "name": "egg milk",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "280.5"
     },
     {
         "date": 1704646800000,
         "name": "bento",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "362"
     },
     {
         "date": 1704733200000,
         "name": "data",
-        "type": "network",
+        "type": "fc5cf12e-f8d9-4994-af99-e46a8ec84044",
         "price": "50"
     },
     {
         "date": 1704819600000,
         "name": "bento",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "221"
     },
     {
         "date": 1704819600000,
         "name": "chicken fruit",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "203.25"
     },
     {
         "date": 1704819600000,
         "name": "baby powder",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "200"
     },
     {
         "date": 1704819600000,
         "name": "lunch",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "65"
     },
     {
         "date": 1704906000000,
         "name": "CMlink SIM",
-        "type": "network",
+        "type": "fc5cf12e-f8d9-4994-af99-e46a8ec84044",
         "price": "1890"
     },
     {
         "date": 1704992400000,
         "name": "fun usb",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "290"
     },
     {
         "date": 1705078800000,
         "name": "bread",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "229.75"
     },
     {
         "date": 1705078800000,
         "name": "mongo rice",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "40"
     },
     {
         "date": 1705078800000,
         "name": "bento",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "300"
     },
     {
         "date": 1705078800000,
         "name": "insurance",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "707.86"
     },
     {
         "date": 1705078800000,
         "name": "water",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "36.72"
     },
     {
         "date": 1705078800000,
         "name": "electric",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "419.3"
     },
     {
         "date": 1705165200000,
         "name": "creatine",
-        "type": "gym",
+        "type": "05dec57f-e43e-41c5-97ce-576b16ffb6b1",
         "price": "758"
     },
     {
         "date": 1705165200000,
         "name": "mildrill",
-        "type": "gym",
+        "type": "05dec57f-e43e-41c5-97ce-576b16ffb6b1",
         "price": "1417"
     },
     {
         "date": 1705597200000,
         "name": "noodles",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "470"
     },
     {
         "date": 1705683600000,
         "name": "r3",
-        "type": "sex",
+        "type": "d2501552-12e3-4aa9-8fbd-f963e96c4793",
         "price": "280"
     },
     {
         "date": 1705770000000,
         "name": "fruit",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "485.75"
     },
     {
         "date": 1705770000000,
         "name": "bento",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "532"
     },
     {
         "date": 1705856400000,
         "name": "mrt",
-        "type": "traffic",
+        "type": "a0649ced-277e-4328-ac37-d57d89c5c991",
         "price": "19"
     },
     {
         "date": 1705856400000,
         "name": "photo",
-        "type": "study",
+        "type": "de9b2039-c8df-4c86-b42e-18d7a50a5723",
         "price": "500"
     },
     {
         "date": 1705856400000,
         "name": "durain",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "30"
     },
     {
         "date": 1705856400000,
         "name": "milk tea",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "30"
     },
     {
         "date": 1705856400000,
         "name": "fruit",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "271.5"
     },
     {
         "date": 1705856400000,
         "name": "bento",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "285"
     },
     {
         "date": 1706115600000,
         "name": "fruit",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "285.25"
     },
     {
         "date": 1706115600000,
         "name": "bento",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "369"
     },
     {
         "date": 1706115600000,
         "name": "mosquito spray",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "124"
     },
     {
         "date": 1706202000000,
         "name": "ice cream",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "30"
     },
     {
         "date": 1706202000000,
         "name": "key card",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "500"
     },
     {
         "date": 1706202000000,
         "name": "water",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "91.8"
     },
     {
         "date": 1706202000000,
         "name": "glue",
-        "type": "commodity",
+        "type": "1f7c587e-31a4-49a5-b616-e4c3a76a35d2",
         "price": "59"
     },
     {
         "date": 1706288400000,
         "name": "water",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "35"
     },
     {
         "date": 1706288400000,
         "name": "noodles",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "130"
     },
     {
         "date": 1706288400000,
         "name": "bento",
-        "type": "food",
+        "type": "3ebe7c4b-ef93-4748-a33c-c4d5d8c4dfc7",
         "price": "364"
     },
     {
         "date": 1706288400000,
         "name": "rent",
-        "type": "dorm",
+        "type": "0ecf66e8-4548-40c5-9c9d-acc6132b76e8",
         "price": "12674"
     }
 ]
