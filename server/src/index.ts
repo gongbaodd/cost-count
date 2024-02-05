@@ -38,7 +38,7 @@ const yoga = createYoga({
 				id: UUID!
 				name: String!
 				price: Float!
-				type: UUID!
+				type: String!
 				date: Timestamp!
 			}
 			type Category {
@@ -92,6 +92,12 @@ const yoga = createYoga({
 					const key = 'categories-' + user.id;
 
 					const categories = await ctx.kv.get(key, 'json') as Category[] ?? [];
+
+					const existed = categories.find(category => category.name === name);
+					if (existed) {
+						throw new GraphQLError('Category already exists');
+					}
+
 					const id = crypto.randomUUID()
 					categories.push({ id, name });
 					await ctx.kv.put(key, JSON.stringify(categories));
