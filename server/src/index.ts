@@ -1,10 +1,11 @@
 import { createSchema, createYoga } from "graphql-yoga"
 import jwt from "@tsndr/cloudflare-worker-jwt"
-import { useJWT } from "@graphql-yoga/plugin-jwt"
+import { GraphQLError } from "graphql";
 
 export interface Env {
 	kv: KVNamespace;
 	SINING_KEY: string;
+	request: Request;
 }
 
 interface Record {
@@ -62,44 +63,49 @@ const yoga = createYoga({
 		resolvers: {
 			Record: {
 				type: async (record: Record, _args, ctx: Env) => {
-					const categories = await ctx.kv.get('categories', 'json') as Category[] ?? [];
+					const { id } = await getToken(ctx)
+
+					const categories = await ctx.kv.get('categories-' + id, 'json') as Category[] ?? [];
 					return categories.find(category => category.id === record.type)?.name ?? 'idle';
 				}
 			},
 			Query: {
-				records: async (_src, _args, ctx: Env) => {
-					const records = await ctx.kv.get('records', 'json') as Record[] ?? [];
-					return records;
-				},
+				records: allRecords,
 				record: async (_src, { id }: { id: string }, ctx: Env) => {
-					const records = await ctx.kv.get('records', 'json') as Record[] ?? [];
+					const records = await allRecords(_src, {}, ctx)
 					return records.find(record => record.id === id);
 				},
-				categories: async (_src, _args, ctx: Env) => {
-					const categories = await ctx.kv.get('categories', 'json') as Category[] ?? [];
-					return categories;
-				},
+				categories: allCategories,
 			},
 			Mutation: {
 				addCategory: async (_src, { name }: { name: string }, ctx: Env) => {
-					const categories = await ctx.kv.get('categories', 'json') as Category[] ?? [];
+					const user = await getToken(ctx)
+					await findUser(user, ctx);
+
+					const categories = await ctx.kv.get('categories-' + user.id, 'json') as Category[] ?? [];
 					const id = crypto.randomUUID()
 					categories.push({ id, name });
 					await ctx.kv.put('categories', JSON.stringify(categories));
 					return { id, name };
 				},
 				addRecord: async (_src, { name, price, type, date }: { name: string, price: number, type: string, date: number }, ctx: Env) => {
-					const records = await ctx.kv.get('records', 'json') as Record[] ?? [];
+					const user = await getToken(ctx)
+					await findUser(user, ctx);
+
+					const records = await ctx.kv.get('records-' + user.id, 'json') as Record[] ?? [];
 					const id = crypto.randomUUID();
-					records.push({ id, name, price, type, date: date ?? +Date.now()});
+					records.push({ id, name, price, type, date: date ?? +Date.now() });
 					await ctx.kv.put('records', JSON.stringify(records));
 					return { id, name, price, type, date };
 				},
 				mutRecord: async (_src, { id, name, price, type, date }: { id: string, name?: string, price?: number, type?: string, date?: number }, ctx: Env) => {
-					const records = await ctx.kv.get('records', 'json') as Record[] ?? [];
+					const user = await getToken(ctx)
+					await findUser(user, ctx);
+
+					const records = await ctx.kv.get('records-' + user.id, 'json') as Record[] ?? [];
 					const record = records.find(record => record.id === id);
 					if (!record) {
-						throw new Error('Record not found');
+						throw new GraphQLError('Record not found');
 					}
 					if (name) {
 						record.name = name;
@@ -113,31 +119,48 @@ const yoga = createYoga({
 					if (date) {
 						record.date = date;
 					}
-					await ctx.kv.put('records', JSON.stringify(records));
+					await ctx.kv.put('records-' + user.id, JSON.stringify(records));
 					return record;
 				},
 				delRecord: async (_src, { id }: { id: string }, ctx: Env) => {
-					const records = await ctx.kv.get('records', 'json') as Record[] ?? [];
+					const user = await getToken(ctx)
+					await findUser(user, ctx);
+
+					const records = await ctx.kv.get('records-' + user.id, 'json') as Record[] ?? [];
 					const record = records.find(record => record.id === id);
 					if (!record) {
-						throw new Error('Record not found');
+						throw new GraphQLError('Record not found');
 					}
-					await ctx.kv.put('records', JSON.stringify(records.filter(record => record.id !== id)));
+					await ctx.kv.put('records-' + user.id, JSON.stringify(records.filter(record => record.id !== id)));
 					return record;
 				},
 				register: async (_src, { email, password }: { email: string, password: string }, ctx: Env) => {
 					const users = await ctx.kv.get('users', 'json') as User[] ?? [];
 					if (users.find(user => user.email === email)) {
-						throw new Error('User already exists');
+						throw new GraphQLError('User already exists');
 					}
 					const id = crypto.randomUUID();
 					const token = jwt.sign({ id }, ctx.SINING_KEY);
 					const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
 					const hash = btoa(String.fromCharCode(...new Uint8Array(hashBuffer)));
-					
+
 					users.push({ id, email, hash });
 					await ctx.kv.put('users', JSON.stringify(users));
 					return { id, email, token };
+				},
+				login: async (_src, { email, password }: { email: string, password: string }, ctx: Env) => {
+					const users = await ctx.kv.get('users', 'json') as User[] ?? [];
+					const user = users.find(user => user.email === email);
+					if (!user) {
+						throw new GraphQLError('User not found');
+					}
+					const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
+					const hash = btoa(String.fromCharCode(...new Uint8Array(hashBuffer)));
+					if (hash !== user.hash) {
+						throw new GraphQLError('Password incorrect');
+					}
+					const token = jwt.sign({ id: user.id }, ctx.SINING_KEY);
+					return { id: user.id, email, token };
 				}
 			},
 		},
@@ -148,3 +171,46 @@ const yoga = createYoga({
 export default {
 	fetch: yoga.fetch,
 };
+
+async function getToken(ctx: Env) {
+	const authorization = ctx.request.headers.get("authorization")
+	if (!authorization) {
+		throw new GraphQLError('Authorization required');
+	}
+
+	const token = authorization.split(" ")[1];
+	const isValid = await jwt.verify(token, ctx.SINING_KEY);
+	if (!isValid) {
+		throw new GraphQLError('Invalid token');
+	}
+
+	const { payload } = jwt.decode(token);
+	return payload as { id: string };
+}
+
+async function findUser({ id }: { id: string }, ctx: Env) {
+	const users = await ctx.kv.get('users', 'json') as User[] ?? [];
+	const user = users.find(user => user.id === id);
+
+	if (!user) {
+		throw new GraphQLError("Invalid user");
+	}
+
+	return user
+}
+
+async function allRecords(_src: any, _args: any, ctx: Env) {
+	const { id } = await getToken(ctx)
+	await findUser({ id }, ctx);
+
+	const records = await ctx.kv.get('records-' + id, 'json') as Record[] ?? [];
+	return records;
+}
+
+async function allCategories(_src: any, _args: any, ctx: Env) {
+	const { id } = await getToken(ctx)
+	await findUser({ id }, ctx);
+
+	const categories = await ctx.kv.get('categories-' + id, 'json') as Category[] ?? [];
+	return categories;
+}
