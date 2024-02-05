@@ -136,6 +136,11 @@ const yoga = createYoga({
 				},
 				register: async (_src, { email, password }: { email: string, password: string }, ctx: Env) => {
 					const users = await ctx.kv.get('users', 'json') as User[] ?? [];
+					
+					if(!email || !password) {
+						throw new GraphQLError('Email and password required');
+					}
+					
 					if (users.find(user => user.email === email)) {
 						throw new GraphQLError('User already exists');
 					}
