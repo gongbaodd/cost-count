@@ -42,6 +42,7 @@ export type AppStackParamList = {
   Hello: undefined 
   Record: undefined
   Detail: {id: number}
+  User: undefined
 }
 
 /**
@@ -67,6 +68,7 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="Hello" component={Screens.HelloScreen} />
       <Stack.Screen name="Record" component={Screens.RecordScreen} />
       <Stack.Screen name="Detail" component={Screens.DetailScreen} />
+      <Stack.Screen name="User" component={Screens.UserScreen} />
     </Stack.Navigator>
   )
 })

@@ -12,12 +12,6 @@ const KEY = "RECORD_ITEMS"
 loadItems()
 
 let items: Item[] = []
-
-// testRecords.map((record, index) => ({
-//   ...record,
-//   price: Number(record.price),
-//   id: index + 1,
-// }))
 let listeners: (() => void)[] = []
 
 export const ItemStore = {

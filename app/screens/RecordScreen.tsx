@@ -20,6 +20,10 @@ export const RecordScreen: FC<RecordScreenProps> = observer(function RecordScree
         onLeftPress={() => {
           navigation.goBack()
         }}
+        rightIcon="community"
+        onRightPress={() => {
+          navigation.navigate("User")
+        }}
         title="Records"
       />
       {records.length > 0 && <ScrollView style={$listView}>
