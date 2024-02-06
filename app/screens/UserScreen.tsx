@@ -1,25 +1,47 @@
 import { AppStackScreenProps } from "app/navigators"
 import { observer } from "mobx-react-lite"
-import React, { FC } from "react"
+import React, { FC, useCallback, useState, useSyncExternalStore } from "react"
 import { Button, Header, Screen, Text, TextField } from "app/components"
 import { View, ViewStyle } from "react-native"
 import { spacing } from "app/theme"
+import { UserStore } from "app/models"
 
 interface UserScreenProps extends AppStackScreenProps<"User"> {}
 
 export const UserScreen: FC<UserScreenProps> = observer(function UserScreen({ navigation }) {
+  const user = useSyncExternalStore(UserStore.subscribe, UserStore.getSnapshot)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const onLoginPress = useCallback(() => {
+    UserStore.login({ email, password })
+  }, [])
+
   return (
     <Screen preset="auto">
       <Header leftIcon="back" onLeftPress={() => navigation.goBack()} />
-      <View style={$root}>
-        <View style={$top}>
-          <Text preset="heading" text="Login" style={$heading} />
-          <Text text={"No registration, now"} style={$signTip} />
+      {!user && (
+        <View style={$root}>
+          <View style={$top}>
+            <Text preset="heading" text="Login" style={$heading} />
+            <Text text={"No registration, now"} style={$signTip} />
+          </View>
+          <TextField label="Email" placeholder="email" value={email} onChangeText={setEmail} />
+          <TextField
+            label="Password"
+            placeholder="password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <Button text="Login" style={$addButton} preset="reversed" onPress={onLoginPress} />
         </View>
-        <TextField label="Email" placeholder="email" />
-        <TextField label="Password" placeholder="password" secureTextEntry />
-        <Button text="Login" style={$addButton} preset="reversed" />
-      </View>
+      )}
+      {user && (
+        <View style={$root}>
+          <Text text={`Welcome, ${user.email}`} />
+          <Button text="Logout" style={$addButton} preset="reversed" onPress={UserStore.logout} />
+        </View>
+      )}
     </Screen>
   )
 })
