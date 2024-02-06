@@ -1,33 +1,32 @@
-import * as storage from "../utils/storage"
+import { addItem, delItem, listItems, mutItem } from "app/services/urql"
 
 interface Item {
-  id: number
+  id: string
   name: string
   price: number
   type: string
   date: number
 }
 
-const KEY = "RECORD_ITEMS"
-loadItems()
-
 let items: Item[] = []
 let listeners: (() => void)[] = []
 
 export const ItemStore = {
+  loadItems: async () => {
+    const data = await listItems()
+    items = data;
+    emitChange()
+  },
   addItem: async (item: Omit<Item, "id">) => {
-    const newItem = { ...item, id: items.length + 1 }
+    const newItem = await addItem(item.name, item.price, item.type)
     items = items.concat(newItem)
-
-    await storage.save(KEY, items)
-
     emitChange()
     return newItem
   },
-  findItem: (id: number) => {
+  findItem: (id: string) => {
     return items.find((item) => item.id === id)
   },
-  modifyItem: async (id: number, item: Omit<Item, "id">) => {
+  modifyItem: async (id: string, item: Omit<Item, "id">) => {
     const index = items.findIndex((item) => item.id === id)
     if (index !== -1) {
       items = [
@@ -36,16 +35,16 @@ export const ItemStore = {
         ...items.slice(index + 1),
       ].sort((a, b) => a.date - b.date)
 
-      await storage.save(KEY, items)
+      await mutItem(id, { type: item.type, date: item.date })
       emitChange()
     }
   },
-  deleteItem: async (id: number) => {
+  deleteItem: async (id: string) => {
     const index = items.findIndex((item) => item.id === id)
     if (index !== -1) {
       items = [...items.slice(0, index), ...items.slice(index + 1)]
 
-      await storage.save(KEY, items)
+      await delItem(id)
       emitChange()
     }
   },
@@ -64,8 +63,8 @@ function emitChange() {
   listeners.forEach((l) => l())
 }
 
-async function loadItems() {
-  const data = await storage.load(KEY) as Item[] | null
-  items = data ?? items
-  emitChange()
-}
+// async function loadItems() {
+//   const data = await storage.load(KEY) as Item[] | null
+//   items = data ?? items
+//   emitChange()
+// }

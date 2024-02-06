@@ -1,25 +1,22 @@
-import * as Storage from "../utils/storage"
+import { addCategory, listCategories } from "app/services/urql"
 
 interface Type {
   name: string,
-  id: number
+  id: string
 }
 
-const KEY = "RECORD_TYPES"
-
-let types: Type[] = [
-    { name: "idle", id: 1 },
-]
+let types: Type[] = []
 let listeners: (() => void)[] = []
 
-loadCategories()
-
 export const CategoryStore = {
+  loadCategories: async () => {
+    const data = await listCategories()
+    types = data ?? types
+    emitChange()
+  },
   addCategory: async (t: Omit<Type, "id">) => {
-    const newCategory = { ...t, id: types.length + 1 }
+    const newCategory = await addCategory(t.name)
     types = types.concat(newCategory)
-
-    await Storage.save(KEY, types)
 
     emitChange()
 
@@ -38,10 +35,4 @@ export const CategoryStore = {
 
 function emitChange() {
   listeners.forEach((l) => l())
-}
-
-async function loadCategories() {
-  const data = await Storage.load(KEY) as Type[] | null
-  types = data ?? types
-  emitChange()
 }

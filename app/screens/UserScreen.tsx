@@ -12,8 +12,11 @@ export const UserScreen: FC<UserScreenProps> = observer(function UserScreen({ na
   const user = useSyncExternalStore(UserStore.subscribe, UserStore.getSnapshot)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const onLoginPress = useCallback(() => {
-    UserStore.login({ email, password })
+
+  const onLoginPress = useCallback(async () => {
+    try {
+      await UserStore.login({ email, password })
+    } catch (error) {}
   }, [])
 
   return (

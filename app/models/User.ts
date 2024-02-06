@@ -1,3 +1,5 @@
+import { login } from "app/services/urql"
+
 interface User {
   id: string
   email: string
@@ -8,8 +10,9 @@ let user: User | null = null
 const listeners: (() => void)[] = []
 
 export const UserStore = {
-  async login(info: Omit<User, "id">) {
-    user = { ...info, id: "1" }
+  async login({ email, password }: Omit<User, "id">) {
+    const { id } = await login(email, password)
+    user = { id, email, password }
     emitChange()
   },
   async logout() {
@@ -20,7 +23,7 @@ export const UserStore = {
     listeners.push(listener)
 
     return () => {
-        listeners.filter((l) => l !== listener)
+      listeners.filter((l) => l !== listener)
     }
   },
   getSnapshot() {
