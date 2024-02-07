@@ -13,20 +13,26 @@ export default function Page() {
 
   const [content, setContent] = useState("")
   const [price, setPrice] = useState(0)
-  const [category, setCategory] = useState("")
+  const [categoryUUID, setCategoryUUID] = useState("")
 
   const onAddPressed = useCallback(async () => {
     if (!content) return 
 
-    const {id} = await ItemStore.addItem({
+    const newItem = {
       name: content,
       price,
-      type: category,
+      type: categoryUUID,
       date: +(new Date()),
-    })
+    }
+
+    if (!categoryUUID) {
+      delete (newItem as any).type
+    }
+
+    const {id} = await ItemStore.addItem(newItem)
 
     router.push(`/record/${id}`)
-  }, [content, price, category])
+  }, [content, price, categoryUUID])
 
   const onRecordPressed = useCallback(() => {
     router.push("/record/")
@@ -51,7 +57,7 @@ export default function Page() {
 
       <PriceTextField price={price} setPrice={setPrice} />
 
-      <CategoryModal value={category} setValue={setCategory} />
+      <CategoryModal value={categoryUUID} setValue={setCategoryUUID} />
 
       <Button
         text="Add"

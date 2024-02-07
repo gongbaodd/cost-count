@@ -131,7 +131,7 @@ export async function listItems() {
 
 const addItemMutation = gql`
   #graphql
-  mutation addItemMutation($name: String!, $price: Float!, $type: String!) {
+  mutation addItemMutation($name: String!, $price: Float!, $type: UUID!) {
     addRecord(name: $name, price: $price, type: $type) {
       date
       id

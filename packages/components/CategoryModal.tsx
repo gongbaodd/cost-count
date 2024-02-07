@@ -23,11 +23,13 @@ export const CategoryModal: FC<{
   );
   let fetchCategories: null | Promise<any> = null;
 
+  const content = CategoryStore.findCategory(value) ?? { name: "idle" };
+
   return (
     <>
       <Text text="Category" preset="formLabel"></Text>
       <Button
-        text={value || "idle"}
+        text={content.name}
         onPress={() => {
           setShowTypeModal(true);
           fetchCategories = CategoryStore.loadCategories().then(() => {
@@ -53,8 +55,9 @@ export const CategoryModal: FC<{
           />
           <Suspense fallback={<Text text="Loading" />}>
             <Categories
-              onPress={(name) => {
-                setValue(name);
+              onPress={(item) => {
+                setValue(item.id);
+
                 setShowTypeModal(false);
               }}
             />
@@ -86,7 +89,11 @@ export const CategoryModal: FC<{
     </>
   );
 
-  function Categories({ onPress }: { onPress: (name: string) => void }) {
+  function Categories({
+    onPress,
+  }: {
+    onPress: (item: (typeof categories)[0]) => void;
+  }) {
     if (fetchCategories) {
       throw fetchCategories;
     }
@@ -99,7 +106,7 @@ export const CategoryModal: FC<{
               text={item.name}
               key={item.id}
               bottomSeparator
-              onPress={() => onPress(item.name)}
+              onPress={() => onPress(item)}
             />
           );
         }}

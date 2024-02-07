@@ -1,13 +1,15 @@
 import { ItemStore } from "@/packages/models";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Button, Header, Screen, Text, TextField } from "@/packages/ignite";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { View, ViewStyle } from "react-native";
 import { spacing } from "@/packages/theme";
 import { DateTimePicker, CategoryModal } from "@/packages/components";
 
 export default function Detail() {
-  const item = ItemStore.findItem("route.params.id");
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  const item = ItemStore.findItem(id);
 
   const [category, setCategory] = useState(item?.type || "");
 
@@ -20,11 +22,21 @@ export default function Detail() {
       <Header
         leftIcon="back"
         onLeftPress={() => {
-            router.back();
+          router.back();
         }}
         title="Detail"
       />
       <View style={$root}>
+        <Suspense fallback={<Text text="loading" />}>
+          <Info />
+        </Suspense>
+      </View>
+    </Screen>
+  );
+
+  function Info() {
+    return (
+      <>
         <Text style={$price} text={item?.price.toFixed(2)} preset="heading" />
 
         <View style={$content}>
@@ -47,54 +59,51 @@ export default function Detail() {
             onPress={deleteItem}
           />
         </View>
-      </View>
-    </Screen>
-  );
+      </>
+    );
+  }
 
-  
-  function deleteItem() {
-    if (!item) return
+  async function deleteItem() {
+    if (!item) return;
 
-    ItemStore.deleteItem(item.id)
-    router.back()
+    await ItemStore.deleteItem(item.id);
+    router.back();
   }
 
   function modifyDate(value: Date) {
-    if (!item) return
+    if (!item) return;
 
-    const newItem = { ...item, date: +value, id: undefined }
-    delete newItem.id
+    const newItem = { ...item, date: +value, id: undefined };
+    delete newItem.id;
 
-    setDate(value)
-    ItemStore.modifyItem(item.id, newItem)
+    setDate(value);
+    ItemStore.modifyItem(item.id, newItem);
   }
 
   function modifyCategory(value: string) {
-    if (!item) return
+    if (!item) return;
 
-    const newItem = { ...item, type: value, id: undefined }
-    delete newItem.id
+    const newItem = { ...item, type: value, id: undefined };
+    delete newItem.id;
 
-    setCategory(value)
-    ItemStore.modifyItem(item.id, newItem)
+    setCategory(value);
+    ItemStore.modifyItem(item.id, newItem);
   }
 }
 
-
 const $root: ViewStyle = {
-    paddingVertical: spacing.xxl,
-    paddingHorizontal: spacing.lg,
-  }
-  
-  const $price: ViewStyle = {
-    alignSelf: "center",
-  }
-  
-  const $content: ViewStyle = {
-    marginTop: spacing.xxl,
-  }
-  
-  const $delete: ViewStyle = {
-    marginTop: spacing.xl,
-  }
-  
+  paddingVertical: spacing.xxl,
+  paddingHorizontal: spacing.lg,
+};
+
+const $price: ViewStyle = {
+  alignSelf: "center",
+};
+
+const $content: ViewStyle = {
+  marginTop: spacing.xxl,
+};
+
+const $delete: ViewStyle = {
+  marginTop: spacing.xl,
+};

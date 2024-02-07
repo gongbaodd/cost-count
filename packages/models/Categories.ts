@@ -23,9 +23,14 @@ async function addCategory (t: Omit<Type, "id">) {
   return newCategory
 }
 
+function findCategory(id: string) {
+  return types.find((t) => t.id === id)
+}
+
 export const CategoryStore = {
   loadCategories,
   addCategory,
+  findCategory,
   subscribe: (listener: () => void) => {
     listeners.push(listener)
     return () => {
