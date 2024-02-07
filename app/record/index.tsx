@@ -1,6 +1,6 @@
 import { ItemStore } from "@/packages/models";
 import { colors, spacing } from "@/packages/theme";
-import { useSyncExternalStore } from "react";
+import { Suspense, useSyncExternalStore } from "react";
 import { ScrollView, ViewStyle } from "react-native";
 import {
   EmptyState,
@@ -33,48 +33,58 @@ export default function Records() {
         }}
         title="Records"
       />
-      {records.length > 0 && (
-        <ScrollView style={$listView}>
-          <ListView
-            data={list}
-            estimatedItemSize={list.length * 50}
-            renderItem={({ item, index }) => {
-              if (item.list_type === "record") {
-                return (
-                  <ListItem
-                    style={[$listItem, $recordItem]}
-                    text={item.name}
-                    key={`item_${index}`}
-                    LeftComponent={
-                      <Text style={$typeBadge} text={item.type} size="xxs" />
-                    }
-                    RightComponent={<Text text={item.price.toFixed(2)} />}
-                    bottomSeparator
-                    onPress={() => {
-                      router.push(`/record/${item.id}`);
-                    }}
-                  />
-                );
-              } else {
-                return (
-                  <ListItem
-                    style={$listItem}
-                    text={item.name}
-                    key={`item_${index}`}
-                    RightComponent={<Text text={item.price.toFixed(2)} />}
-                    bottomSeparator
-                  />
-                );
-              }
-            }}
-          />
-        </ScrollView>
-      )}
-      {records.length === 0 && (
-        <EmptyState style={$empty} buttonOnPress={() => router.back()} />
-      )}
+      <Suspense fallback={<Text text="Loading" />}>
+        <List />
+      </Suspense>
     </Screen>
   );
+
+  function List() {
+    return (
+      <>
+        {records.length > 0 && (
+          <ScrollView style={$listView}>
+            <ListView
+              data={list}
+              estimatedItemSize={list.length * 50}
+              renderItem={({ item, index }) => {
+                if (item.list_type === "record") {
+                  return (
+                    <ListItem
+                      style={[$listItem, $recordItem]}
+                      text={item.name}
+                      key={`item_${index}`}
+                      LeftComponent={
+                        <Text style={$typeBadge} text={item.type} size="xxs" />
+                      }
+                      RightComponent={<Text text={item.price.toFixed(2)} />}
+                      bottomSeparator
+                      onPress={() => {
+                        router.push(`/record/${item.id}`);
+                      }}
+                    />
+                  );
+                } else {
+                  return (
+                    <ListItem
+                      style={$listItem}
+                      text={item.name}
+                      key={`item_${index}`}
+                      RightComponent={<Text text={item.price.toFixed(2)} />}
+                      bottomSeparator
+                    />
+                  );
+                }
+              }}
+            />
+          </ScrollView>
+        )}
+        {records.length === 0 && (
+          <EmptyState style={$empty} buttonOnPress={() => router.back()} />
+        )}
+      </>
+    );
+  }
 
   type recordItem = (typeof records)[0] & { list_type: "record" };
   type dayItem = {

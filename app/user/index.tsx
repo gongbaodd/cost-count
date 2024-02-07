@@ -11,10 +11,13 @@ export default function User() {
   const [password, setPassword] = useState("");
 
   const onLoginPress = useCallback(async () => {
+    if (!email || !password) {
+      return;
+    }
     try {
       await UserStore.login({ email, password });
     } catch (error) {}
-  }, []);
+  }, [email, password]);
 
   return (
     <Screen preset="auto">

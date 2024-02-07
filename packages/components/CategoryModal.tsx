@@ -8,7 +8,6 @@ import {
   ListView,
   ListItem,
   TextField,
-  Icon,
   Header,
 } from "@/packages/ignite";
 

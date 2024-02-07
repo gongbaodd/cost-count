@@ -1,4 +1,4 @@
-import { addCategory, listCategories } from "../services"
+import { addCategory as add, listCategories } from "../services"
 
 interface Type {
   name: string,
@@ -8,20 +8,24 @@ interface Type {
 let types: Type[] = []
 let listeners: (() => void)[] = []
 
+async function loadCategories() {
+  const data = await listCategories()
+  types = data ?? types
+  emitChange()
+}
+
+async function addCategory (t: Omit<Type, "id">) {
+  const newCategory = await add(t.name)
+  types = types.concat(newCategory)
+
+  emitChange()
+
+  return newCategory
+}
+
 export const CategoryStore = {
-  loadCategories: async () => {
-    const data = await listCategories()
-    types = data ?? types
-    emitChange()
-  },
-  addCategory: async (t: Omit<Type, "id">) => {
-    const newCategory = await addCategory(t.name)
-    types = types.concat(newCategory)
-
-    emitChange()
-
-    return newCategory
-  },
+  loadCategories,
+  addCategory,
   subscribe: (listener: () => void) => {
     listeners.push(listener)
     return () => {
