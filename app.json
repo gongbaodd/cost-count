@@ -52,6 +52,12 @@
         "backgroundColor": "#40b7bf"
       },
       "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
     }
   }
 }
