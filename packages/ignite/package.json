@@ -1,0 +1,8 @@
+{
+    "name": "ignite",
+    "version": "1.0.0",
+    "dependencies": {
+        "@shopify/flash-list": "^1.6.3",
+        "i18n-js": "^4.3.2"
+    }
+}

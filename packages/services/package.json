@@ -1,0 +1,7 @@
+{
+    "name": "services",
+    "version": "0.0.1",
+    "dependencies": {
+        "@urql/core": "^4.2.3"
+    }
+}
