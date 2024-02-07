@@ -197,7 +197,7 @@ export async function mutItem(
 
 const delItemMutation = gql`
   #graphql
-  mutation delItemMutation($id: String!) {
+  mutation delItemMutation($id: UUID!) {
     delRecord(id: $id) {
       date
       id
