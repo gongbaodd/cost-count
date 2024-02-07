@@ -153,7 +153,7 @@ const yoga = createYoga({
 					if (!record) {
 						throw new GraphQLError('Record not found');
 					}
-					await ctx.kv.put(key + user.id, JSON.stringify(records.filter(record => record.id !== id)));
+					await ctx.kv.put(key, JSON.stringify(records.filter(record => record.id !== id)));
 					return record;
 				},
 				register: async (_src, { email, password }: { email: string, password: string }, ctx: Env) => {
