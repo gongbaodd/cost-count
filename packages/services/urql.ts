@@ -1,11 +1,10 @@
+import { GRAPHQL_URL as URL } from "@env"
 import { Client, cacheExchange, gql, fetchExchange } from "@urql/core"
-
-const URL = process.env.GRAPHQL_URL
 
 let token = ""
 
 const client = new Client({
-  url: URL as string,
+  url: URL,
   exchanges: [cacheExchange, fetchExchange],
   fetchOptions: () => {
     return {
@@ -27,7 +26,6 @@ const loginMutation = gql`
   }
 `
 export async function login(email: string, password: string) {
-  console.log("login", email, password)
   const result = await client.mutation(loginMutation, { email, password }).toPromise()
   const data = result.data.login as { email: string; id: string; token: string }
 
