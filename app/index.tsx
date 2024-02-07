@@ -25,11 +25,11 @@ export default function Page() {
       date: +(new Date()),
     })
 
-    // router.push("Detail", { id })
+    router.push(`/record/${id}`)
   }, [content, price, category])
 
   const onRecordPressed = useCallback(() => {
-    router.push("/records" as any)
+    router.push("/record/")
   }, [])
 
 

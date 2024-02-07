@@ -29,7 +29,7 @@ export default function Records() {
         }}
         rightIcon="community"
         onRightPress={() => {
-          // navigation.navigate("User")
+          router.push("/user/");
         }}
         title="Records"
       />
@@ -51,7 +51,7 @@ export default function Records() {
                     RightComponent={<Text text={item.price.toFixed(2)} />}
                     bottomSeparator
                     onPress={() => {
-                      //navigation.navigate("Detail", {id: item.id})
+                      router.push(`/record/${item.id}`);
                     }}
                   />
                 );
