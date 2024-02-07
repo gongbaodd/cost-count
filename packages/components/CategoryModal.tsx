@@ -1,16 +1,28 @@
-import React, { FC, useState, useSyncExternalStore } from "react"
-import { Modal, View, ViewStyle } from "react-native"
-import { colors, spacing } from "@/packages/theme"
-import { CategoryStore } from "../models"
-import { Text, Button, ListView, ListItem, TextField, Icon } from "@/packages/ignite"
+import React, { FC, Suspense, useState, useSyncExternalStore } from "react";
+import { Modal, View, ViewStyle } from "react-native";
+import { colors, spacing } from "@/packages/theme";
+import { CategoryStore } from "../models";
+import {
+  Text,
+  Button,
+  ListView,
+  ListItem,
+  TextField,
+  Icon,
+  Header,
+} from "@/packages/ignite";
 
 export const CategoryModal: FC<{
-  value: string
-  setValue: (s: string) => void
+  value: string;
+  setValue: (s: string) => void;
 }> = ({ value, setValue }) => {
-  const categories = useSyncExternalStore(CategoryStore.subscribe, CategoryStore.getSnapshot)
-  const [showTypeModal, setShowTypeModal] = useState(false)
-  const [newCategory, setNewCategory] = useState("")
+  const [showTypeModal, setShowTypeModal] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
+  const categories = useSyncExternalStore(
+    CategoryStore.subscribe,
+    CategoryStore.getSnapshot
+  );
+  let fetchCategories: null | Promise<any> = null;
 
   return (
     <>
@@ -18,7 +30,10 @@ export const CategoryModal: FC<{
       <Button
         text={value || "idle"}
         onPress={() => {
-          setShowTypeModal(true)
+          setShowTypeModal(true);
+          fetchCategories = CategoryStore.loadCategories().then(() => {
+            fetchCategories = null;
+          });
         }}
         style={$typeButton}
       ></Button>
@@ -27,47 +42,74 @@ export const CategoryModal: FC<{
         transparent={true}
         visible={showTypeModal}
         onRequestClose={() => {
-          setShowTypeModal(false)
+          setShowTypeModal(false);
         }}
       >
         <View style={$modal}>
-          <ListView
-            ListHeaderComponent={() => (
-              <View style={$modalTitle}>
-                <Text text="Category" preset="bold" />
-                <Icon icon="x" onPress={() => setShowTypeModal(false)} />
-              </View>
-            )}
-            renderItem={({ item }) => {
-              return <ListItem text={item.name} key={item.id} bottomSeparator onPress={onCategoryPress} />
-
-              function onCategoryPress() {
-                setValue(item.name)
-                setShowTypeModal(false)
-              }
-            }}
-            data={categories}
-            estimatedItemSize={categories.length * 50}
+          <Header
+            title="Category"
+            rightIcon="x"
+            onRightPress={() => setShowTypeModal(false)}
+            style={$modalTitle}
           />
+          <Suspense fallback={<Text text="Loading" />}>
+            <Categories
+              onPress={(name) => {
+                setValue(name);
+                setShowTypeModal(false);
+              }}
+            />
+          </Suspense>
+
           <TextField
             placeholder="Add Category"
             value={newCategory}
             onChangeText={setNewCategory}
             RightAccessory={() => {
-             return <Button text="Add" style={$addCategoryButton} onPress={onAddCategoryPress} disabled={!newCategory} />
-            
+              return (
+                <Button
+                  text="Add"
+                  style={$addCategoryButton}
+                  onPress={onAddCategoryPress}
+                  disabled={!newCategory}
+                />
+              );
+
               function onAddCategoryPress() {
-                console.log("newCategory", newCategory)
-                CategoryStore.addCategory({ name: newCategory })
-                setNewCategory("")
+                console.log("newCategory", newCategory);
+                CategoryStore.addCategory({ name: newCategory });
+                setNewCategory("");
               }
             }}
           />
         </View>
       </Modal>
     </>
-  )
-}
+  );
+
+  function Categories({ onPress }: { onPress: (name: string) => void }) {
+    if (fetchCategories) {
+      throw fetchCategories;
+    }
+
+    return (
+      <ListView
+        renderItem={({ item }) => {
+          return (
+            <ListItem
+              text={item.name}
+              key={item.id}
+              bottomSeparator
+              onPress={() => onPress(item.name)}
+            />
+          );
+        }}
+        data={categories}
+        estimatedItemSize={50}
+      />
+    );
+  }
+};
 
 const $modal: ViewStyle = {
   height: "50%",
@@ -77,24 +119,23 @@ const $modal: ViewStyle = {
   borderTopLeftRadius: 20,
   position: "absolute",
   bottom: 0,
-  paddingHorizontal: spacing.lg,
-  paddingVertical: spacing.xl,
-}
+  paddingHorizontal: spacing.md,
+  paddingBottom: spacing.md,
+};
 
 const $modalTitle: ViewStyle = {
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
   marginBottom: spacing.xl,
-}
+};
 
 const $addCategoryButton: ViewStyle = {
   minHeight: spacing.lg,
-}
+};
 
 const $typeButton: ViewStyle = {
   marginTop: spacing.xs,
   justifyContent: "flex-start",
   minHeight: spacing.lg,
-}
-
+};
