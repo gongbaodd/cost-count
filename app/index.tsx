@@ -3,8 +3,9 @@ import { Button, Screen } from "@/packages/ignite";
 import { spacing } from "@/packages/theme";
 import { TextField } from "@/packages/ignite/TextField";
 import { useCallback, useState } from "react";
-import { PriceTextField } from "@/packages/components";
-import { CategoryModal } from "@/packages/components/CategoryModal";
+import { PriceTextField, CategoryModal } from "@/packages/components";
+import { ItemStore } from "@/packages/models";
+import { router } from "expo-router"
 
 const logo = require("../assets/images/logo.png");
 
@@ -17,18 +18,18 @@ export default function Page() {
   const onAddPressed = useCallback(async () => {
     if (!content) return 
 
-    // const {id} = await ItemStore.addItem({
-    //   name: content,
-    //   price,
-    //   type: category,
-    //   date: +(new Date()),
-    // })
+    const {id} = await ItemStore.addItem({
+      name: content,
+      price,
+      type: category,
+      date: +(new Date()),
+    })
 
-    // navigation.navigate("Detail", { id })
+    // router.push("Detail", { id })
   }, [content, price, category])
 
   const onRecordPressed = useCallback(() => {
-    // navigation.navigate("Record")
+    router.push("/records" as any)
   }, [])
 
 

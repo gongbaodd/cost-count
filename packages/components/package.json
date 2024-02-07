@@ -1,4 +1,7 @@
 {
     "name": "components",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "dependencies": {
+        "@react-native-community/datetimepicker": "^7.6.2"
+    }
 }
