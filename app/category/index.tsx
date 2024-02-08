@@ -19,7 +19,7 @@ const running = require("../../assets/images/running.png");
 
 export default function Categories() {
   let fetchCategories: null | Promise<any> =
-    CategoryStore.loadCategories().then(() => {
+    CategoryStore.remote.loadCategories().then(() => {
       fetchCategories = null;
     });
 
@@ -52,7 +52,7 @@ export default function Categories() {
             );
 
             function onAddCategoryPress() {
-              CategoryStore.addCategory({ name: newCategory });
+              CategoryStore.remote.addCategory({ name: newCategory });
               setNewCategory("");
             }
           }}

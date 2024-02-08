@@ -3,7 +3,7 @@ import { Button, Screen } from "@/packages/ignite";
 import { spacing } from "@/packages/theme";
 import { TextField } from "@/packages/ignite/TextField";
 import { useCallback, useState, useSyncExternalStore } from "react";
-import { PriceTextField, CategoryModal } from "@/packages/components";
+import { PriceTextField } from "@/packages/components";
 import { ItemStore } from "@/packages/models";
 import { router } from "expo-router"
 import { CategoryButton } from "./category";
@@ -29,7 +29,7 @@ export default function Home() {
       type: category.id
     }
 
-    const {id} = await ItemStore.addItem(newItem)
+    const {id} = await ItemStore.remote.addItem(newItem)
 
     router.push(`/record/${id}`)
   }, [content, price, category])

@@ -28,8 +28,10 @@ function findCategory(id: string) {
 }
 
 export const CategoryStore = {
-  loadCategories,
-  addCategory,
+  remote: {
+    loadCategories,
+    addCategory,
+  },
   findCategory,
   subscribe: (listener: () => void) => {
     listeners.push(listener)

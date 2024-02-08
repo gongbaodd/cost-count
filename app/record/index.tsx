@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 const running = require("../../assets/images/running.png");
 
 export default function Records() {
-  let waitRecords: null | Promise<void> = ItemStore.loadItems().then(() => {
+  let waitRecords: null | Promise<void> = ItemStore.remote.loadItems().then(() => {
     waitRecords = null;
   });
 

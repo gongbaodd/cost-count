@@ -12,8 +12,6 @@ export default function Detail() {
 
   const item = ItemStore.findItem(id);
 
-  const [category, setCategory] = useState(item?.type || "");
-
   const [date, setDate] = useState(
     item?.date ? new Date(item.date) : new Date()
   );
@@ -67,7 +65,7 @@ export default function Detail() {
   async function deleteItem() {
     if (!item) return;
 
-    await ItemStore.deleteItem(item.id);
+    await ItemStore.remote.deleteItem(item.id);
     router.back();
   }
 
@@ -78,7 +76,7 @@ export default function Detail() {
     delete newItem.id;
 
     setDate(value);
-    ItemStore.modifyItem(item.id, newItem);
+    ItemStore.remote.modifyItem(item.id, newItem);
   }
 
   function modifyCategory(value: string) {
@@ -87,8 +85,7 @@ export default function Detail() {
     const newItem = { ...item, type: value, id: undefined };
     delete newItem.id;
 
-    setCategory(value);
-    ItemStore.modifyItem(item.id, newItem);
+    ItemStore.remote.modifyItem(item.id, newItem);
   }
 }
 
