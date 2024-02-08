@@ -26,6 +26,12 @@ export default function Categories() {
 
   return (
     <Screen contentContainerStyle={$modal} preset="fixed" >
+                <Header
+            title="Category"
+            rightIcon="x"
+            onRightPress={() => router.back()}
+            style={$modalTitle}
+          />
       <Suspense fallback={<Loading />}>
         <Categories onPress={() => {}} />
       </Suspense>
@@ -45,7 +51,6 @@ export default function Categories() {
             );
 
             function onAddCategoryPress() {
-              console.log("newCategory", newCategory);
               CategoryStore.addCategory({ name: newCategory });
               setNewCategory("");
             }
@@ -60,7 +65,6 @@ export default function Categories() {
       throw fetchCategories;
     }
 
-    const [newCategory, setNewCategory] = useState("");
     const categories = useSyncExternalStore(
       CategoryStore.subscribe,
       CategoryStore.getSnapshot
@@ -140,3 +144,10 @@ const $addCategoryButton: ViewStyle = {
 };
 
 const $addCategory: ViewStyle = {};
+
+const $modalTitle: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: spacing.xl,
+};

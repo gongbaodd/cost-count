@@ -5,6 +5,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { View, ViewStyle } from "react-native";
 import { spacing } from "@/packages/theme";
 import { DateTimePicker, CategoryModal } from "@/packages/components";
+import { CategoryButton } from "../category";
 
 export default function Detail() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -48,7 +49,7 @@ export default function Detail() {
             placeholder="name"
           />
 
-          <CategoryModal value={category} setValue={modifyCategory} />
+          <CategoryButton />
 
           <DateTimePicker value={date} setValue={modifyDate} />
 
