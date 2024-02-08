@@ -14,6 +14,7 @@
 		"wrangler": "^3.0.0"
 	},
 	"dependencies": {
+		"@graphql-tools/executor-http": "^1.0.7",
 		"@tsndr/cloudflare-worker-jwt": "^2.4.5",
 		"@urql/core": "^4.2.3",
 		"graphql": "^16.8.1",

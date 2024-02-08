@@ -73,7 +73,7 @@ const schema = createSchema({
 	},
 });
 
-const yoga = createYoga({
+export const yoga = createYoga({
 	schema,
 	graphiql: true,
 });

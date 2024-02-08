@@ -2,6 +2,7 @@ import { GraphQLError } from 'graphql';
 import { Env } from '../types';
 import jwt from '@tsndr/cloudflare-worker-jwt';
 import { hash } from '../utils/hash';
+import { storage } from '../utils/storage';
 
 const key = 'users';
 
@@ -12,7 +13,7 @@ export interface User {
 }
 
 export async function getUsers(ctx: Env) {
-	const users = await ctx.kv.get<User[] | null>(key, 'json');
+	const users = await storage(ctx).get<User[] | null>(key, 'json');
 	return users ?? [];
 }
 
@@ -27,8 +28,10 @@ export async function getUserByEmail(ctx: Env, email: string) {
 }
 
 export async function createUser(ctx: Env, info: Omit<User, 'id' | 'hash'> & { password: string }) {
-	const users = await getUsers(ctx);
-	const user = await getUserByEmail(ctx, info.email);
+	const [users, user] = await Promise.all([
+		getUsers(ctx),
+		getUserByEmail(ctx, info.email),
+	])
 
 	if (user) {
 		throw new GraphQLError('User already exists', {
@@ -44,7 +47,7 @@ export async function createUser(ctx: Env, info: Omit<User, 'id' | 'hash'> & { p
 	const newUser = { id, email: info.email, hash: await hash(info.password) };
 
 	users.push(newUser);
-	await ctx.kv.put(key, JSON.stringify(users));
+	await storage(ctx).put(key, JSON.stringify(users));
 	return newUser;
 }
 

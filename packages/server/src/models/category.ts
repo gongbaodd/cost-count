@@ -1,6 +1,7 @@
 import { GraphQLError } from 'graphql';
 import { Env } from '../types';
 import { User, verifyUser } from './user';
+import { storage } from "../utils/storage"
 
 export interface Category {
 	id: string;
@@ -15,7 +16,7 @@ export async function getCategories(ctx: Env) {
 	const user = await verifyUser(ctx);
 	const key = getKey(user);
 
-	const categories = (await ctx.kv.get<Category[] | null>(key, 'json')) ?? [];
+	const categories = (await storage(ctx).get<Category[] | null>(key, 'json')) ?? [];
 
 	return categories;
 }
@@ -48,7 +49,7 @@ export async function createCategory(ctx: Env, name: string): Promise<Category> 
 
 	const id = crypto.randomUUID();
 	categories.push({ id, name });
-	await ctx.kv.put(key, JSON.stringify(categories));
+	await storage(ctx).put(key, JSON.stringify(categories));
 
 	return { id, name };
 }

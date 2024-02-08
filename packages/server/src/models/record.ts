@@ -2,6 +2,7 @@ import { GraphQLError } from 'graphql';
 import { Env } from '../types';
 import { findCategoryById } from './category';
 import { User, verifyUser } from './user';
+import { storage } from '../utils/storage';
 
 export interface Record {
 	id: string;
@@ -19,7 +20,7 @@ export async function getRecords(ctx: Env) {
 	const user = await verifyUser(ctx);
 	const key = getKey(user);
 
-	const records = (await ctx.kv.get<Record[] | null>(key, 'json')) ?? [];
+	const records = (await storage(ctx).get<Record[] | null>(key, 'json')) ?? [];
 	return records;
 }
 
@@ -44,7 +45,7 @@ export async function createRecord(ctx: Env, { name, price, type, date }: Omit<R
 	const key = getKey(user);
 	const id = crypto.randomUUID();
 	records.push({ id, name, price, type, date: date ?? +Date.now() });
-	await ctx.kv.put(key, JSON.stringify(records));
+	await storage(ctx).put(key, JSON.stringify(records));
 	return { id, name, price, type, date };
 }
 
@@ -75,7 +76,7 @@ export async function updateRecord(ctx: Env, id: string, { name, price, type, da
 	}
 
 	const key = getKey(user);
-	await ctx.kv.put(key, JSON.stringify(records));
+	await storage(ctx).put(key, JSON.stringify(records));
 	return record;
 }
 
@@ -93,6 +94,6 @@ export async function deleteRecord(ctx: Env, id: string) {
 	}
 
 	const key = getKey(user);
-	await ctx.kv.put(key, JSON.stringify(records.filter((record) => record.id !== id)));
+	await storage(ctx).put(key, JSON.stringify(records.filter((record) => record.id !== id)));
 	return record;
 }
