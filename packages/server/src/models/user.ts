@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql';
 import { Env } from '../types';
-import jwt, { sign } from '@tsndr/cloudflare-worker-jwt';
+import jwt from '@tsndr/cloudflare-worker-jwt';
 import { hash } from '../utils/hash';
 
 const key = 'users';
