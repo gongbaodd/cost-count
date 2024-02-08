@@ -8,7 +8,7 @@ import {
   Header,
   TextField,
 } from "@/packages/ignite";
-import { CategoryStore } from "@/packages/models";
+import { CategoryStore, Type } from "@/packages/models";
 import { SelectedCategoryStore } from "@/packages/models/SelectedCategory";
 import { colors, spacing } from "@/packages/theme";
 import { router, useFocusEffect } from "expo-router";
@@ -93,18 +93,28 @@ export default function Categories() {
   }
 }
 
-export function CategoryButton() {
-  const selected = useSyncExternalStore(
-    SelectedCategoryStore.subscribe,
-    SelectedCategoryStore.getSnapshot
-  );
+export function CategoryButton({ value, setValue }: { value: Type | null; setValue: (value: Type) => void}) {
+  const [opened, setOpened] = useState(false);
+  const selected = useSyncExternalStore(SelectedCategoryStore.subscribe, SelectedCategoryStore.getSnapshot)
+
+  const onBack = useCallback(() => {
+    if (opened) {
+      setOpened(false)
+      if ("id" in selected) {
+        setValue(selected)
+      }
+    }
+  }, [opened, selected])
+  useFocusEffect(onBack)
+
   return (
     <>
       <Text text="Category" preset="formLabel"></Text>
       <Button
-        text={selected.name}
+        text={value ? value.name : "Select Category"}
         onPress={() => {
           router.push("/category/");
+          setOpened(true)
         }}
         style={$typeButton}
       ></Button>

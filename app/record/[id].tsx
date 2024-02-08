@@ -19,17 +19,11 @@ const running = require("../../assets/images/running.png");
 
 export default function Detail() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const item = ItemStore.findItem(id);
-  const categories = useSyncExternalStore(
-    CategoryStore.subscribe,
-    CategoryStore.getSnapshot
-  );
-  if (item) {
-    const category = categories.find((c) => c.name === item.type);
+  const item = ItemStore.findItem(id)!;
 
-    if (category) {
-      SelectedCategoryStore.select(category);
-    }
+  if (!item) {
+    router.back()
+    return null
   }
 
   return (
@@ -51,8 +45,9 @@ export default function Detail() {
 
   function Info() {
     const [date, setDate] = useState(
-      item?.date ? new Date(item.date) : new Date()
+      item.date ? new Date(item.date) : new Date()
     );
+    const [category, setCategory] = useState(item.type)
 
     return (
       <>
@@ -67,27 +62,33 @@ export default function Detail() {
             placeholder="name"
           />
 
-          <CategoryButton />
+          <CategoryButton value={category} setValue={setCategory} />
 
-          <DateTimePicker value={date} setValue={modifyDate} />
+          <DateTimePicker value={date} setValue={setDate} />
+
+          <Button 
+            text="Modify"
+            preset="reversed"
+            style={$delete}
+            onPress={modifyItem}
+          />
 
           <Button
             text="Delete"
-            preset="reversed"
+            preset="filled"
             style={$delete}
             onPress={deleteItem}
           />
+
         </View>
       </>
     );
 
-    function modifyDate(value: Date) {
+    function modifyItem() {
       if (!item) return;
 
-      const newItem = { ...item, date: +value, id: undefined };
-      delete newItem.id;
+      const newItem = { ...item, date: +date, type: category.id };
 
-      setDate(value);
       ItemStore.remote.modifyItem(item.id, newItem);
     }
   }
@@ -97,15 +98,6 @@ export default function Detail() {
 
     await ItemStore.remote.deleteItem(item.id);
     router.back();
-  }
-
-  function modifyCategory(value: string) {
-    if (!item) return;
-
-    const newItem = { ...item, type: value, id: undefined };
-    delete newItem.id;
-
-    ItemStore.remote.modifyItem(item.id, newItem);
   }
 }
 

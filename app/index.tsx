@@ -4,10 +4,9 @@ import { spacing } from "@/packages/theme";
 import { TextField } from "@/packages/ignite/TextField";
 import { useCallback, useState, useSyncExternalStore } from "react";
 import { PriceTextField } from "@/packages/components";
-import { ItemStore } from "@/packages/models";
+import { ItemStore, Type } from "@/packages/models";
 import { router } from "expo-router"
 import { CategoryButton } from "./category";
-import { SelectedCategoryStore } from "@/packages/models/SelectedCategory";
 
 const logo = require("../assets/images/logo.png");
 
@@ -15,12 +14,11 @@ export default function Home() {
 
   const [content, setContent] = useState("")
   const [price, setPrice] = useState(0)
-
-  const category = useSyncExternalStore(SelectedCategoryStore.subscribe, SelectedCategoryStore.getSnapshot)
+  const [category, setCategory] = useState<Type | null>(null)
 
   const onAddPressed = useCallback(async () => {
     if (!content) return 
-    if (!("id" in category)) return
+    if (!category) return
 
     const newItem = {
       name: content,
@@ -56,7 +54,7 @@ export default function Home() {
 
       <PriceTextField price={price} setPrice={setPrice} />
 
-      <CategoryButton />
+      <CategoryButton value={category} setValue={setCategory} />
 
       <Button
         text="Add"

@@ -4,7 +4,10 @@ interface Item {
   id: string;
   name: string;
   price: number;
-  type: string;// name of category
+  type: {
+    id: string
+    name: string
+  }
   date: number;
 }
 
@@ -42,23 +45,24 @@ async function loadItems() {
   emitChange();
 }
 
-async function _addItem(item: Omit<Item, "id">) {
+async function _addItem(item: Omit<Item, "id" | "type"> & { type: Item["type"]["id"] }) {
   const newItem = await addItem(item.name, item.price, item.type);
   items = items.concat(newItem);
   emitChange();
   return newItem;
 }
 
-async function modifyItem(id: string, item: Omit<Item, "id">) {
+async function modifyItem(id: string, item: Omit<Item, "id"| "type"> & { type: Item["type"]["id"] }) {
   const index = items.findIndex((item) => item.id === id);
   if (index !== -1) {
+    const newItem = await mutItem(id, { type: item.type, date: item.date });
+
     items = [
       ...items.slice(0, index),
-      { ...item, id },
+      newItem,
       ...items.slice(index + 1),
     ].sort((a, b) => a.date - b.date);
 
-    await mutItem(id, { type: item.type, date: item.date });
     emitChange();
   }
 }

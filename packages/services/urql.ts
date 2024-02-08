@@ -107,7 +107,10 @@ const listItemsQuery = gql`
       id
       name
       price
-      type
+      type {
+        id
+        name
+      }
     }
   }
 `;
@@ -125,7 +128,10 @@ export async function listItems() {
     id: string;
     name: string;
     price: number;
-    type: string;
+    type: {
+      id: string
+      name: string
+    }
   }[];
 }
 
@@ -165,7 +171,10 @@ const addItemMutation = gql`
       id
       name
       price
-      type
+      type {
+        id
+        name
+      }
     }
   }
 `;
@@ -185,7 +194,10 @@ export async function addItem(name: string, price: number, type: string) {
     id: string;
     name: string;
     price: number;
-    type: string;
+    type: {
+      id: string
+      name: string
+    };
   };
 }
 
@@ -197,7 +209,10 @@ const mutItemMutation = gql`
       id
       name
       price
-      type
+      type {
+        id
+        name
+      }
     }
   }
 `;
@@ -219,7 +234,10 @@ export async function mutItem(
     id: string;
     name: string;
     price: number;
-    type: string;
+    type: {
+      id: string
+      name: string
+    };
   };
 }
 

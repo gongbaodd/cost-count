@@ -86,7 +86,7 @@ export default function Records() {
                   text={item.name}
                   key={`item_${index}`}
                   LeftComponent={
-                    <Text style={$typeBadge} text={item.type} size="xxs" />
+                    <Text style={$typeBadge} text={item.type.name} size="xxs" />
                   }
                   RightComponent={<Text text={item.price.toFixed(2)} />}
                   bottomSeparator
