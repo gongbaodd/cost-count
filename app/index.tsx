@@ -6,10 +6,11 @@ import { useCallback, useState } from "react";
 import { PriceTextField, CategoryModal } from "@/packages/components";
 import { ItemStore } from "@/packages/models";
 import { router } from "expo-router"
+import { CategoryButton } from "./category";
 
 const logo = require("../assets/images/logo.png");
 
-export default function Page() {
+export default function Home() {
 
   const [content, setContent] = useState("")
   const [price, setPrice] = useState(0)
@@ -57,7 +58,10 @@ export default function Page() {
 
       <PriceTextField price={price} setPrice={setPrice} />
 
-      <CategoryModal value={categoryUUID} setValue={setCategoryUUID} />
+      {/* <CategoryModal value={categoryUUID} setValue={setCategoryUUID} />
+       */}
+
+      <CategoryButton />
 
       <Button
         text="Add"
