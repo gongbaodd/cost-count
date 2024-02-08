@@ -1,6 +1,6 @@
 import { addCategory as add, listCategories } from "../services"
 
-interface Type {
+export interface Type {
   name: string,
   id: string
 }

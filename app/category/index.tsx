@@ -9,9 +9,10 @@ import {
   TextField,
 } from "@/packages/ignite";
 import { CategoryStore } from "@/packages/models";
+import { SelectedCategoryStore } from "@/packages/models/SelectedCategory";
 import { colors, spacing } from "@/packages/theme";
-import { router } from "expo-router";
-import { Suspense, useState, useSyncExternalStore } from "react";
+import { router, useFocusEffect } from "expo-router";
+import { Suspense, useCallback, useState, useSyncExternalStore } from "react";
 import { View, ViewStyle } from "react-native";
 
 const running = require("../../assets/images/running.png");
@@ -25,15 +26,15 @@ export default function Categories() {
   const [newCategory, setNewCategory] = useState("");
 
   return (
-    <Screen contentContainerStyle={$modal} preset="fixed" >
-                <Header
-            title="Category"
-            rightIcon="x"
-            onRightPress={() => router.back()}
-            style={$modalTitle}
-          />
+    <Screen contentContainerStyle={$modal} preset="fixed">
+      <Header
+        title="Category"
+        rightIcon="x"
+        onRightPress={() => router.back()}
+        style={$modalTitle}
+      />
       <Suspense fallback={<Loading />}>
-        <Categories onPress={() => {}} />
+        <Categories />
       </Suspense>
       <View style={$addCategory}>
         <TextField
@@ -60,7 +61,7 @@ export default function Categories() {
     </Screen>
   );
 
-  function Categories({ onPress }: { onPress: (item: any) => void }) {
+  function Categories() {
     if (fetchCategories) {
       throw fetchCategories;
     }
@@ -78,7 +79,10 @@ export default function Categories() {
               text={item.name}
               key={item.id}
               bottomSeparator
-              onPress={() => onPress(item)}
+              onPress={() => {
+                SelectedCategoryStore.select(item);
+                router.back()
+              }}
             />
           );
         }}
@@ -90,11 +94,15 @@ export default function Categories() {
 }
 
 export function CategoryButton() {
+  const selected = useSyncExternalStore(
+    SelectedCategoryStore.subscribe,
+    SelectedCategoryStore.getSnapshot
+  );
   return (
     <>
       <Text text="Category" preset="formLabel"></Text>
       <Button
-        text={"idle"}
+        text={selected.name}
         onPress={() => {
           router.push("/category/");
         }}
@@ -108,8 +116,8 @@ function Loading() {
   return (
     <EmptyState
       imageSource={running}
-      heading=""
-      content=""
+      heading="Please wait"
+      content="loading..."
       button=""
       style={$loading}
     />
