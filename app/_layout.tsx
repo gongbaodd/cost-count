@@ -6,7 +6,7 @@ export default function RootLayout() {
         headerShown: false
       }}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="category" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="category/index" options={{ presentation: 'modal' }} />
       </Stack>
   );
 }
