@@ -1,22 +1,24 @@
 {
-  "name": "costcount-server",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
-    "start": "wrangler dev"
-  },
-  "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240129.0",
-    "typescript": "^5.0.4",
-    "wrangler": "^3.0.0"
-  },
-  "dependencies": {
-    "@tsndr/cloudflare-worker-jwt": "^2.4.5",
-    "@urql/core": "^4.2.3",
-    "graphql": "^16.8.1",
-    "graphql-scalars": "^1.22.4",
-    "graphql-yoga": "^5.1.1"
-  }
+	"name": "costcount-server",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev",
+		"start": "wrangler dev",
+		"test": "vitest"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20240129.0",
+		"typescript": "^5.0.4",
+		"vitest": "^1.2.2",
+		"wrangler": "^3.0.0"
+	},
+	"dependencies": {
+		"@tsndr/cloudflare-worker-jwt": "^2.4.5",
+		"@urql/core": "^4.2.3",
+		"graphql": "^16.8.1",
+		"graphql-scalars": "^1.22.4",
+		"graphql-yoga": "^5.1.1"
+	}
 }
