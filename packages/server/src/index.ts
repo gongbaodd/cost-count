@@ -21,7 +21,7 @@ const schema = createSchema({
 			id: UUID!
 			name: String!
 			price: Float!
-			type: String!
+			type: Category
 			date: Timestamp!
 		}
 		type Category {
@@ -54,7 +54,7 @@ const schema = createSchema({
 		Record: {
 			type: async (record: Record, _args, ctx: Env) => {
 				const categories = await getCategories(ctx);
-				return categories.find((category) => category.id === record.type)?.name ?? 'idle';
+				return categories.find((category) => category.id === record.type) ?? null;
 			},
 		},
 		Query: {
