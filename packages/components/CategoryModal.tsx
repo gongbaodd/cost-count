@@ -9,7 +9,10 @@ import {
   ListItem,
   TextField,
   Header,
+  EmptyState,
 } from "@/packages/ignite";
+
+const running = require("../../assets/images/running.png");
 
 export const CategoryModal: FC<{
   value: string;
@@ -53,11 +56,10 @@ export const CategoryModal: FC<{
             onRightPress={() => setShowTypeModal(false)}
             style={$modalTitle}
           />
-          <Suspense fallback={<Text text="Loading" />}>
+          <Suspense fallback={<Loading />}>
             <Categories
               onPress={(item) => {
                 setValue(item.id);
-
                 setShowTypeModal(false);
               }}
             />
@@ -116,6 +118,20 @@ export const CategoryModal: FC<{
     );
   }
 };
+
+function Loading() {
+  return <EmptyState 
+    imageSource={running} 
+    heading=""
+    content=""
+    button=""
+    style={$loading}
+  />
+}
+
+const $loading: ViewStyle = {
+  flex: 1
+}
 
 const $modal: ViewStyle = {
   height: "50%",

@@ -13,6 +13,8 @@ import {
 import { router } from "expo-router";
 import dayjs from "dayjs";
 
+const running = require("../../assets/images/running.png");
+
 export default function Records() {
   let waitRecords: null | Promise<void> = ItemStore.loadItems().then(() => {
     waitRecords = null;
@@ -22,20 +24,39 @@ export default function Records() {
     <Screen preset="fixed" contentContainerStyle={$root}>
       <Header
         leftIcon="back"
-        onLeftPress={() => {
-          router.back();
-        }}
+        onLeftPress={goBack}
         rightIcon="community"
         onRightPress={() => {
           router.push("/user/");
         }}
         title="Records"
       />
-      <Suspense fallback={<Text text="Loading" />}>
+      <Suspense fallback={<Loading />}>
         <List />
       </Suspense>
     </Screen>
   );
+
+  function goBack() {
+    router.back();
+  }
+
+  function Loading() {
+    return (
+      <EmptyState
+        style={$empty}
+        imageSource={running}
+        content="Loading records"
+        heading="Please wait"
+        button="Go back"
+        buttonOnPress={goBack}
+      />
+    );
+  }
+
+  function Empty() {
+    return <EmptyState style={$empty} buttonOnPress={goBack} />;
+  }
 
   function List() {
     if (waitRecords) {
@@ -49,7 +70,7 @@ export default function Records() {
     const list = recordsToList(records);
 
     if (records.length === 0) {
-      return <EmptyState style={$empty} buttonOnPress={() => router.back()} />;
+      return <Empty />;
     }
 
     return (
