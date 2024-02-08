@@ -4,7 +4,7 @@ interface Item {
   id: string;
   name: string;
   price: number;
-  type: string;
+  type: string;// name of category
   date: number;
 }
 
@@ -14,7 +14,6 @@ let listeners: (() => void)[] = [];
 export const ItemStore = {
   remote: {
     loadItems,
-    loadItem,
     addItem: _addItem,
     modifyItem,
     deleteItem,
@@ -73,5 +72,3 @@ async function deleteItem(id: string) {
     emitChange();
   }
 }
-
-async function loadItem(id: string) {}

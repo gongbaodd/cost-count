@@ -129,6 +129,34 @@ export async function listItems() {
   }[];
 }
 
+const getItemQuery = gql`#graphql
+  query getItemQuery($id: UUID!) {
+    record(id: $id) {
+      date
+      id
+      name
+      price
+      type
+    }
+  }
+`
+export async function getItem(id: string) {
+  await loadToken();
+
+  if (!token) {
+    throw new Error("Not logged in");
+  }
+
+  const result = await client.query(getItemQuery, { id }).toPromise();
+  return result.data.record as {
+    date: number;
+    id: string;
+    name: string;
+    price: number;
+    type: string;
+  };
+}
+
 const addItemMutation = gql`
   #graphql
   mutation addItemMutation($name: String!, $price: Float!, $type: UUID!) {
