@@ -8,7 +8,7 @@ loadToken();
 const client = new Client({
   url: URL,
   exchanges: [
-    cacheExchange, 
+    // cacheExchange, 
     fetchExchange
   ],
   fetchOptions: () => {
