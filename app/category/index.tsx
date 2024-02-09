@@ -19,20 +19,22 @@ const running = require("../../assets/images/running.png");
 
 export default function Categories() {
 
-  let fetchCategories: null | Promise<void> = (async () => {
+  let fetchCategories: null | Promise<void> = new Promise(async (resolve) => {
     await UserStore.load()
     const user = UserStore.getSnapshot()
 
     if (user) {
       CategoryStore.remote.loadCategories().finally(() => {
         fetchCategories = null;
+        resolve()
       })  
     } else {
       CategoryStore.storage.loadCategories().finally(() => {
         fetchCategories = null;
+        resolve()
       })
     }
-  })()
+  });
     
   const [newCategory, setNewCategory] = useState("");
 
@@ -61,23 +63,28 @@ export default function Categories() {
                 disabled={!newCategory}
               />
             );
-
-            function onAddCategoryPress() {
-              const user = UserStore.getSnapshot();
-    
-              if (user) {
-                CategoryStore.remote.addCategory({ name: newCategory });
-              } else {
-                CategoryStore.storage.addCategory({ name: newCategory });
-              }
-
-              setNewCategory("");
-            }
           }}
         ></TextField>
       </View>
     </Screen>
   );
+
+  function onAddCategoryPress() {
+    const user = UserStore.getSnapshot();
+
+    if (user) {
+      CategoryStore.remote.addCategory({ name: newCategory });
+    } else {
+      CategoryStore.storage.addCategory({ name: newCategory });
+    }
+
+    setNewCategory("");
+  }
+
+  
+  function Empty() {
+    return <EmptyState style={$empty} buttonOnPress={() => router.back()} />;
+  }
 
   function Categories() {
     if (fetchCategories) {
@@ -88,6 +95,10 @@ export default function Categories() {
       CategoryStore.subscribe,
       CategoryStore.getSnapshot
     );
+
+    if (categories.length === 0) {
+      return <Empty />;
+    }
 
     return (
       <ListView
@@ -186,4 +197,11 @@ const $modalTitle: ViewStyle = {
   justifyContent: "space-between",
   alignItems: "center",
   marginBottom: spacing.xl,
+};
+
+const $empty: ViewStyle = {
+  flex: 1,
+  paddingLeft: spacing.lg,
+  paddingRight: spacing.lg,
+  paddingTop: spacing.xxxl,
 };
