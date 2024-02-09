@@ -53,9 +53,6 @@ async function _login(email: string, password: string) {
 
   if (data) {
     token = data.token;
-
-    await Promise.all([AsyncStorage.setItem("token", token)]);
-
     return data;
   }
 

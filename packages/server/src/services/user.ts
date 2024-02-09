@@ -39,6 +39,6 @@ export const login = async (_src: any, { email, password }: LoginInput, ctx: Env
 			},
 		});
 	}
-	const token = await signUser(ctx, user);
+	const { token } = await signUser(ctx, user);
 	return { id: user.id, email, token };
 };

@@ -1,4 +1,4 @@
-import { CategoryStore, ItemStore } from "@/packages/models";
+import { CategoryStore, ItemStore, UserStore } from "@/packages/models";
 import { Suspense, useState, useSyncExternalStore } from "react";
 import {
   Button,
@@ -21,8 +21,8 @@ export default function Detail() {
   const item = ItemStore.findItem(id)!;
 
   if (!item) {
-    router.back()
-    return null
+    router.back();
+    return null;
   }
 
   return (
@@ -43,10 +43,14 @@ export default function Detail() {
   );
 
   function Info() {
+    const user = useSyncExternalStore(
+      UserStore.subscribe,
+      UserStore.getSnapshot
+    );
     const [date, setDate] = useState(
       item.date ? new Date(item.date) : new Date()
     );
-    const [category, setCategory] = useState(item.type)
+    const [category, setCategory] = useState(item.type);
 
     return (
       <>
@@ -65,7 +69,7 @@ export default function Detail() {
 
           <DateTimePicker value={date} setValue={setDate} />
 
-          <Button 
+          <Button
             text="Modify"
             preset="reversed"
             style={$delete}
@@ -78,25 +82,33 @@ export default function Detail() {
             style={$delete}
             onPress={deleteItem}
           />
-
         </View>
       </>
     );
 
-    function modifyItem() {
+    async function modifyItem() {
       if (!item) return;
 
       const newItem = { ...item, date: +date, type: category.id };
 
-      ItemStore.remote.modifyItem(item.id, newItem);
+      if (user) {
+        ItemStore.remote.modifyItem(item.id, newItem);
+      } else {
+        ItemStore.storage.modifyItem(item.id, newItem);
+      }
     }
-  }
 
-  async function deleteItem() {
-    if (!item) return;
+    async function deleteItem() {
+      if (!item) return;
 
-    await ItemStore.remote.deleteItem(item.id);
-    router.back();
+      if (user) {
+        await ItemStore.remote.deleteItem(item.id);
+      } else {
+        await ItemStore.storage.deleteItem(item.id);
+      }
+
+      router.back();
+    }
   }
 }
 
