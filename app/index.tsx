@@ -4,7 +4,7 @@ import { spacing } from "@/packages/theme";
 import { TextField } from "@/packages/ignite/TextField";
 import { useCallback, useState, useSyncExternalStore } from "react";
 import { PriceTextField } from "@/packages/components";
-import { ItemStore, Type } from "@/packages/models";
+import { ItemStore, Type, UserStore } from "@/packages/models";
 import { router } from "expo-router"
 import { CategoryButton } from "./category";
 
@@ -15,6 +15,8 @@ export default function Home() {
   const [content, setContent] = useState("")
   const [price, setPrice] = useState(0)
   const [category, setCategory] = useState<Type | null>(null)
+
+  const user = useSyncExternalStore(UserStore.subscribe, UserStore.getSnapshot)
 
   const onAddPressed = useCallback(async () => {
     if (!content) return 
@@ -27,9 +29,19 @@ export default function Home() {
       type: category.id
     }
 
-    const {id} = await ItemStore.remote.addItem(newItem)
+    let id = ""
 
-    router.push(`/record/${id}`)
+    if (user) {
+      const added = await ItemStore.remote.addItem(newItem)
+      id = added?.id ?? id
+    } else {
+      const added = await ItemStore.storage.addItem(newItem)
+      id = added?.id ?? id
+    }
+
+    if (id) {
+      router.push(`/record/${id}`)
+    }
   }, [content, price, category])
 
   const onRecordPressed = useCallback(() => {

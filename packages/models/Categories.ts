@@ -1,5 +1,4 @@
 import { addCategory as add, listCategories, storage } from "../services";
-import { getUser } from "./User";
 
 export interface Type {
   name: string;
@@ -43,7 +42,7 @@ async function loadCategoriesInStore() {
 }
 
 async function addCategoryInStore(t: Omit<Type, "id">) {
-  const newCategory = {...t, id: "local" + crypto.randomUUID()};
+  const newCategory = {...t, id: "local-" + crypto.randomUUID()};
   types = types.concat(newCategory);
 
   await storage.setItem(`categories`, types);
@@ -63,7 +62,7 @@ async function loadCategories() {
 async function addCategory(t: Omit<Type, "id">) {
   const newCategory = await add(t.name);
 
-  if (!newCategory) { return }
+  if (!newCategory) { return null }
   
   types = types.concat(newCategory);
 

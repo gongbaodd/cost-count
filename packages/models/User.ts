@@ -11,8 +11,12 @@ const listeners: (() => void)[] = []
 
 export const UserStore = {
   async login({ email, password }: Omit<User, "id">) {
-    const { id } = await login(email, password)
-    user = { id, email, password }
+    const info = await login(email, password)
+    if (!info) {
+      return;
+    }
+
+    user = { id: info.id, email, password }
     emitChange()
   },
   async logout() {
@@ -35,6 +39,3 @@ function emitChange() {
   listeners.forEach((l) => l())
 }
 
-export function getUser() {
-  return user
-}

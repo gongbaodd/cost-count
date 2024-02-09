@@ -1,4 +1,4 @@
-import { ItemStore } from "@/packages/models";
+import { ItemStore, UserStore } from "@/packages/models";
 import { colors, spacing } from "@/packages/theme";
 import { Suspense, useSyncExternalStore } from "react";
 import { ScrollView, ViewStyle } from "react-native";
@@ -16,9 +16,20 @@ import dayjs from "dayjs";
 const running = require("../../assets/images/running.png");
 
 export default function Records() {
-  let waitRecords: null | Promise<void> = ItemStore.remote.loadItems().then(() => {
-    waitRecords = null;
-  });
+  const user = useSyncExternalStore(UserStore.subscribe, UserStore.getSnapshot)
+
+
+  let waitRecords: null | Promise<void>; 
+  
+  if (user) {
+    waitRecords = ItemStore.remote.loadItems().finally(() => {
+      waitRecords = null;
+    });
+  } else {
+    waitRecords = ItemStore.storage.loadItems().finally(() => {
+      waitRecords = null;
+    });
+  }
 
   return (
     <Screen preset="fixed" contentContainerStyle={$root}>
