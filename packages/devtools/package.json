@@ -1,0 +1,8 @@
+{
+    "name": "devtools",
+    "version": "1.0.0",
+    "dependencies": {
+        "reactotron-react-js": "^3.3.11",
+        "reactotron-react-native": "^5.1.0"
+    }
+}

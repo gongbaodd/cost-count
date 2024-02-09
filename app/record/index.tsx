@@ -75,7 +75,6 @@ export default function Records() {
   }
 
   function List() {
-    console.log(waitRecords)
     if (waitRecords) {
       throw waitRecords;
     }

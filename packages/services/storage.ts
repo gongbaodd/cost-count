@@ -1,11 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { loadString, saveString } from "../utils";
 
 const KEY = "cost-count-2024-01-09";
 
 export async function setItem<T>(key: string, value: T) {
   try {
     const data = await all();
-    await AsyncStorage.setItem(KEY, JSON.stringify({ ...data, [key]: value }));
+    await saveString(KEY, JSON.stringify({ ...data, [key]: value }));
     return true;
   } catch (error) {
     console.error("Error saving data", error);
@@ -15,8 +15,8 @@ export async function setItem<T>(key: string, value: T) {
 
 export async function getItem<T>(key: string): Promise<T | null> {
   try {
-    const data = (await AsyncStorage.getItem(KEY)) ?? "{}";
-    return JSON.parse(data)[key];
+    const data = await all();
+    return data[key];
   } catch (error) {
     console.error("Error getting data", error);
     return null;
@@ -25,7 +25,7 @@ export async function getItem<T>(key: string): Promise<T | null> {
 
 export async function all() {
   try {
-    const data = (await AsyncStorage.getItem(KEY)) ?? "{}";
+    const data = await loadString(KEY) ?? "{}";
     return JSON.parse(data);
   } catch (error) {
     console.error("Error getting data", error);
