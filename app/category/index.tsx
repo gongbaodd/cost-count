@@ -8,7 +8,7 @@ import {
   Header,
   TextField,
 } from "@/packages/ignite";
-import { CategoryStore, Type } from "@/packages/models";
+import { CategoryStore, Type, UserStore } from "@/packages/models";
 import { SelectedCategoryStore } from "@/packages/models/SelectedCategory";
 import { colors, spacing } from "@/packages/theme";
 import { router, useFocusEffect } from "expo-router";
@@ -18,11 +18,20 @@ import { View, ViewStyle } from "react-native";
 const running = require("../../assets/images/running.png");
 
 export default function Categories() {
-  let fetchCategories: null | Promise<any> =
+  const user = useSyncExternalStore(UserStore.subscribe, UserStore.getSnapshot)
+
+  let fetchCategories: null | Promise<void>;
+  
+  if (user) {
     CategoryStore.remote.loadCategories().finally(() => {
       fetchCategories = null;
     })  
-
+  } else {
+    CategoryStore.storage.loadCategories().finally(() => {
+      fetchCategories = null;
+    })
+  }
+    
   const [newCategory, setNewCategory] = useState("");
 
   return (
@@ -52,7 +61,12 @@ export default function Categories() {
             );
 
             function onAddCategoryPress() {
-              CategoryStore.remote.addCategory({ name: newCategory });
+              if (user) {
+                CategoryStore.remote.addCategory({ name: newCategory });
+              } else {
+                CategoryStore.storage.addCategory({ name: newCategory });
+              }
+
               setNewCategory("");
             }
           }}
