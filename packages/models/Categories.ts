@@ -62,6 +62,9 @@ async function loadCategories() {
 
 async function addCategory(t: Omit<Type, "id">) {
   const newCategory = await add(t.name);
+
+  if (!newCategory) { return }
+  
   types = types.concat(newCategory);
 
   emitChange();

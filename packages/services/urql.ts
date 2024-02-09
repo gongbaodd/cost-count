@@ -30,7 +30,18 @@ const loginMutation = gql`
     }
   }
 `;
+
 export async function login(email: string, password: string) {
+  try {
+    const data = await _login(email, password);
+    return data;
+  } catch (error) {
+    console.error("Error logging in", error);
+    return null;
+  }
+} 
+
+async function _login(email: string, password: string) {
   const result = await client
     .mutation(loginMutation, { email, password })
     .toPromise();
@@ -65,7 +76,16 @@ const listCategoriesQuery = gql`
   }
 `;
 
-export async function listCategories() {
+export async function listCategories(){
+  try {
+    return await _listCategories();
+  } catch (error) {
+    console.error("Error loading categories", error);
+    return [];
+  }
+}
+
+async function _listCategories() {
   await loadToken();
 
   if (!token) {
@@ -87,6 +107,15 @@ const addCategoryMutation = gql`
 `;
 
 export async function addCategory(name: string) {
+  try {
+    return await _addCategory(name);
+  } catch (error) {
+    console.error("Error adding category", error);
+    return null;
+  }
+}
+
+async function _addCategory(name: string) {
   await loadToken();
 
   if (!token) {
@@ -116,6 +145,15 @@ const listItemsQuery = gql`
 `;
 
 export async function listItems() {
+  try {
+    return await _listItems();
+  } catch (error) {
+    console.error("Error loading items", error);
+    return [];
+  }
+}
+
+async function _listItems() {
   await loadToken();
 
   if (!token) {
@@ -147,6 +185,15 @@ const getItemQuery = gql`#graphql
   }
 `
 export async function getItem(id: string) {
+  try {
+    return await _getItem(id);
+  } catch (error) {
+    console.error("Error loading item", error);
+    return null;
+  }
+}
+
+async function _getItem(id: string) {
   await loadToken();
 
   if (!token) {
@@ -180,6 +227,15 @@ const addItemMutation = gql`
 `;
 
 export async function addItem(name: string, price: number, type: string) {
+  try {
+    return await _addItem(name, price, type);
+  } catch (error) {
+    console.error("Error adding item", error);
+    return null;
+  }
+}
+
+async function _addItem(name: string, price: number, type: string) {
   await loadToken();
 
   if (!token) {
@@ -216,7 +272,20 @@ const mutItemMutation = gql`
     }
   }
 `;
+
 export async function mutItem(
+  id: string,
+  rest: { date: number; type: string }
+) {
+  try {
+    return await _mutItem(id, rest);
+  } catch (error) {
+    console.error("Error changing item", error);
+    return null;
+  }
+}
+
+async function _mutItem(
   id: string,
   rest: { date: number; type: string }
 ) {
@@ -255,6 +324,15 @@ const delItemMutation = gql`
 `;
 
 export async function delItem(id: string) {
+  try {
+    return await _delItem(id);
+  } catch (error) {
+    console.error("Error deleting item", error);
+    return null;
+  }
+}
+
+async function _delItem(id: string) {
   await loadToken();
 
   if (!token) {
