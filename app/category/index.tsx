@@ -19,9 +19,9 @@ const running = require("../../assets/images/running.png");
 
 export default function Categories() {
   let fetchCategories: null | Promise<any> =
-    CategoryStore.remote.loadCategories().then(() => {
+    CategoryStore.remote.loadCategories().finally(() => {
       fetchCategories = null;
-    });
+    })  
 
   const [newCategory, setNewCategory] = useState("");
 

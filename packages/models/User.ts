@@ -34,3 +34,7 @@ export const UserStore = {
 function emitChange() {
   listeners.forEach((l) => l())
 }
+
+export function getUser() {
+  return user
+}

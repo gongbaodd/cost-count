@@ -1,4 +1,6 @@
 import { addCategory as add, listCategories } from "../services"
+import { getItem } from "../utils"
+import { getUser } from "./User"
 
 export interface Type {
   name: string,
@@ -9,8 +11,16 @@ let types: Type[] = []
 let listeners: (() => void)[] = []
 
 async function loadCategories() {
-  const data = await listCategories()
-  types = data ?? types
+  const user = getUser()
+
+  if (user) {
+    const data = await listCategories()
+    types = data ?? types
+  } else {
+    const localTypes = await getItem<Type[]>("categories")
+    types = localTypes ?? types
+  }
+
   emitChange()
 }
 

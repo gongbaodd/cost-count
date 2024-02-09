@@ -13,7 +13,6 @@ import { View, ViewStyle } from "react-native";
 import { spacing } from "@/packages/theme";
 import { DateTimePicker } from "@/packages/components";
 import { CategoryButton } from "../category";
-import { SelectedCategoryStore } from "@/packages/models/SelectedCategory";
 
 const running = require("../../assets/images/running.png");
 
