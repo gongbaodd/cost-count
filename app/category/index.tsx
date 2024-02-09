@@ -18,19 +18,21 @@ import { View, ViewStyle } from "react-native";
 const running = require("../../assets/images/running.png");
 
 export default function Categories() {
-  const user = useSyncExternalStore(UserStore.subscribe, UserStore.getSnapshot)
 
-  let fetchCategories: null | Promise<void>;
-  
-  if (user) {
-    CategoryStore.remote.loadCategories().finally(() => {
-      fetchCategories = null;
-    })  
-  } else {
-    CategoryStore.storage.loadCategories().finally(() => {
-      fetchCategories = null;
-    })
-  }
+  let fetchCategories: null | Promise<void> = (async () => {
+    await UserStore.load()
+    const user = UserStore.getSnapshot()
+
+    if (user) {
+      CategoryStore.remote.loadCategories().finally(() => {
+        fetchCategories = null;
+      })  
+    } else {
+      CategoryStore.storage.loadCategories().finally(() => {
+        fetchCategories = null;
+      })
+    }
+  })()
     
   const [newCategory, setNewCategory] = useState("");
 
@@ -61,6 +63,8 @@ export default function Categories() {
             );
 
             function onAddCategoryPress() {
+              const user = UserStore.getSnapshot();
+    
               if (user) {
                 CategoryStore.remote.addCategory({ name: newCategory });
               } else {

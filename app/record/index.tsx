@@ -16,20 +16,25 @@ import dayjs from "dayjs";
 const running = require("../../assets/images/running.png");
 
 export default function Records() {
-  const user = useSyncExternalStore(UserStore.subscribe, UserStore.getSnapshot)
-
-
   let waitRecords: null | Promise<void>; 
+
+  waitRecords = new Promise(async (res) => {
+    await UserStore.load()
+    const user = UserStore.getSnapshot()
+
+    if (user) {
+      ItemStore.remote.loadItems().finally(() => {
+        waitRecords = null;
+        res()
+      });
+    } else {
+      ItemStore.storage.loadItems().finally(() => {
+        waitRecords = null;
+        res()
+      });
+    }
+  });
   
-  if (user) {
-    waitRecords = ItemStore.remote.loadItems().finally(() => {
-      waitRecords = null;
-    });
-  } else {
-    waitRecords = ItemStore.storage.loadItems().finally(() => {
-      waitRecords = null;
-    });
-  }
 
   return (
     <Screen preset="fixed" contentContainerStyle={$root}>
@@ -70,6 +75,7 @@ export default function Records() {
   }
 
   function List() {
+    console.log(waitRecords)
     if (waitRecords) {
       throw waitRecords;
     }

@@ -1,6 +1,6 @@
 import { GRAPHQL_URL as URL } from "@env";
 import { Client, cacheExchange, gql, fetchExchange } from "@urql/core";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserStore } from "../models";
 
 let token = "";
 loadToken();
@@ -60,7 +60,9 @@ async function _login(email: string, password: string) {
 }
 
 async function loadToken() {
-  token = (await AsyncStorage.getItem("token")) || "";
+  const user = UserStore.getSnapshot();
+
+  token = user?.token ?? token
 }
 
 const listCategoriesQuery = gql`

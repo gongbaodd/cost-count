@@ -16,8 +16,6 @@ export default function Home() {
   const [price, setPrice] = useState(0)
   const [category, setCategory] = useState<Type | null>(null)
 
-  const user = useSyncExternalStore(UserStore.subscribe, UserStore.getSnapshot)
-
   const onAddPressed = useCallback(async () => {
     if (!content) return 
     if (!category) return
@@ -30,6 +28,8 @@ export default function Home() {
     }
 
     let id = ""
+
+    const user = UserStore.getSnapshot()
 
     if (user) {
       const added = await ItemStore.remote.addItem(newItem)

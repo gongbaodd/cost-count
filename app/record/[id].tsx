@@ -43,10 +43,6 @@ export default function Detail() {
   );
 
   function Info() {
-    const user = useSyncExternalStore(
-      UserStore.subscribe,
-      UserStore.getSnapshot
-    );
     const [date, setDate] = useState(
       item.date ? new Date(item.date) : new Date()
     );
@@ -91,6 +87,8 @@ export default function Detail() {
 
       const newItem = { ...item, date: +date, type: category.id };
 
+      const user = UserStore.getSnapshot();
+
       if (user) {
         ItemStore.remote.modifyItem(item.id, newItem);
       } else {
@@ -100,6 +98,8 @@ export default function Detail() {
 
     async function deleteItem() {
       if (!item) return;
+
+      const user = UserStore.getSnapshot();
 
       if (user) {
         await ItemStore.remote.deleteItem(item.id);
