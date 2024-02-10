@@ -90,7 +90,6 @@ export default function Records() {
     }
 
     return (
-      <ScrollView style={$listView}>
         <ListView
           data={list}
           estimatedItemSize={list.length * 50}
@@ -124,7 +123,6 @@ export default function Records() {
             }
           }}
         />
-      </ScrollView>
     );
 
     type recordItem = (typeof records)[0] & { list_type: "record" };
@@ -225,12 +223,6 @@ const $root: ViewStyle = {
   height: "100%",
   display: "flex",
   overflow: "hidden",
-};
-
-const $listView: ViewStyle = {
-  height: "100%",
-  width: "100%",
-  flex: 1,
 };
 
 const $typeBadge: ViewStyle = {

@@ -18,28 +18,31 @@ import { View, ViewStyle } from "react-native";
 const running = require("../../assets/images/running.png");
 
 export default function Categories() {
-
   let fetchCategories: null | Promise<void> = new Promise(async (resolve) => {
-    await UserStore.load()
-    const user = UserStore.getSnapshot()
+    await UserStore.load();
+    const user = UserStore.getSnapshot();
 
     if (user) {
       CategoryStore.remote.loadCategories().finally(() => {
         fetchCategories = null;
-        resolve()
-      })  
+        resolve();
+      });
     } else {
       CategoryStore.storage.loadCategories().finally(() => {
         fetchCategories = null;
-        resolve()
-      })
+        resolve();
+      });
     }
   });
-    
+
   const [newCategory, setNewCategory] = useState("");
 
   return (
-    <Screen contentContainerStyle={$modal} preset="fixed">
+    <Screen
+      contentContainerStyle={$modal}
+      preset="fixed"
+      safeAreaEdges={[ "bottom"]}
+    >
       <Header
         title="Category"
         rightIcon="x"
@@ -81,7 +84,6 @@ export default function Categories() {
     setNewCategory("");
   }
 
-  
   function Empty() {
     return <EmptyState style={$empty} buttonOnPress={() => router.back()} />;
   }
@@ -110,31 +112,40 @@ export default function Categories() {
               bottomSeparator
               onPress={() => {
                 SelectedCategoryStore.select(item);
-                router.back()
+                router.back();
               }}
             />
           );
         }}
         data={categories}
-        estimatedItemSize={50}
+        estimatedItemSize={57}
       />
     );
   }
 }
 
-export function CategoryButton({ value, setValue }: { value: Type | null; setValue: (value: Type) => void}) {
+export function CategoryButton({
+  value,
+  setValue,
+}: {
+  value: Type | null;
+  setValue: (value: Type) => void;
+}) {
   const [opened, setOpened] = useState(false);
-  const selected = useSyncExternalStore(SelectedCategoryStore.subscribe, SelectedCategoryStore.getSnapshot)
+  const selected = useSyncExternalStore(
+    SelectedCategoryStore.subscribe,
+    SelectedCategoryStore.getSnapshot
+  );
 
   const onBack = useCallback(() => {
     if (opened) {
-      setOpened(false)
+      setOpened(false);
       if ("id" in selected) {
-        setValue(selected)
+        setValue(selected);
       }
     }
-  }, [opened, selected])
-  useFocusEffect(onBack)
+  }, [opened, selected]);
+  useFocusEffect(onBack);
 
   return (
     <>
@@ -143,7 +154,7 @@ export function CategoryButton({ value, setValue }: { value: Type | null; setVal
         text={value ? value.name : "Select Category"}
         onPress={() => {
           router.push("/category/");
-          setOpened(true)
+          setOpened(true);
         }}
         style={$typeButton}
       ></Button>
@@ -190,7 +201,9 @@ const $addCategoryButton: ViewStyle = {
   minHeight: spacing.lg,
 };
 
-const $addCategory: ViewStyle = {};
+const $addCategory: ViewStyle = {
+
+};
 
 const $modalTitle: ViewStyle = {
   flexDirection: "row",
