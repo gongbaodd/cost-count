@@ -22,7 +22,7 @@ module.exports = ({ config }: ConfigContext): Partial<ExpoConfig> => {
     ],
     "extra": {
       "eas": {
-        "projectId": "c8610ac3-c600-45ca-9f7b-917008bae77e"
+        "projectId": "5cf86ffc-63c0-427b-ac52-3d85fc9ff6c0"
       }
     }
   }
