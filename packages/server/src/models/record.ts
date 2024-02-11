@@ -44,9 +44,11 @@ export async function createRecord(ctx: Env, { name, price, type, date }: Omit<R
 
 	const key = getKey(user);
 	const id = crypto.randomUUID();
-	records.push({ id, name, price, type, date: date ?? +Date.now() });
+	const newRecord = { id, name, price, type, date: date ?? +Date.now() };
+	records.push(newRecord);
 	await storage(ctx).put(key, JSON.stringify(records));
-	return { id, name, price, type, date };
+
+	return newRecord;
 }
 
 export async function updateRecord(ctx: Env, id: string, { name, price, type, date }: Partial<Omit<Record, 'id'>>): Promise<Record> {

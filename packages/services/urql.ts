@@ -317,7 +317,10 @@ const delItemMutation = gql`
       id
       name
       price
-      type
+      type {
+        id
+        name
+      }
     }
   }
 `;
@@ -344,6 +347,9 @@ async function _delItem(id: string) {
     id: string;
     name: string;
     price: number;
-    type: string;
+    type: {
+      id: string
+      name: string
+    };
   };
 }
