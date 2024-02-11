@@ -40,6 +40,10 @@ export default function Home() {
     }
 
     if (id) {
+      setContent("")
+      setPrice(0)
+      setCategory(null)
+
       router.push(`/record/${id}`)
     }
   }, [content, price, category])
