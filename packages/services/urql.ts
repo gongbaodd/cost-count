@@ -1,5 +1,5 @@
 import { GRAPHQL_URL as URL } from "@env";
-import { Client, cacheExchange, gql, fetchExchange } from "@urql/core";
+import { Client, gql, fetchExchange } from "@urql/core";
 import { UserStore } from "../models";
 
 let token = "";
@@ -7,10 +7,7 @@ loadToken();
 
 const client = new Client({
   url: URL,
-  exchanges: [
-    // cacheExchange, 
-    fetchExchange
-  ],
+  exchanges: [fetchExchange],
   fetchOptions: () => {
     return {
       headers: {
@@ -39,17 +36,25 @@ export async function login(email: string, password: string) {
     console.error("Error logging in", error);
     return null;
   }
-} 
+}
 
 async function _login(email: string, password: string) {
   const result = await client
-    .mutation(loginMutation, { email, password })
+    .mutation<
+      {
+        login: {
+          email: string;
+          id: string;
+          token: string;
+        };
+      },
+      {
+        email: string;
+        password: string;
+      }
+    >(loginMutation, { email, password })
     .toPromise();
-  const data = result.data.login as {
-    email: string;
-    id: string;
-    token: string;
-  };
+  const data = result.data?.login;
 
   if (data) {
     token = data.token;
@@ -62,7 +67,7 @@ async function _login(email: string, password: string) {
 async function loadToken() {
   const user = UserStore.getSnapshot();
 
-  token = user?.token ?? token
+  token = user?.token ?? token;
 }
 
 const listCategoriesQuery = gql`
@@ -75,7 +80,7 @@ const listCategoriesQuery = gql`
   }
 `;
 
-export async function listCategories(){
+export async function listCategories() {
   try {
     return await _listCategories();
   } catch (error) {
@@ -91,8 +96,12 @@ async function _listCategories() {
     throw new Error("Not logged in");
   }
 
-  const result = await client.query(listCategoriesQuery, {}).toPromise();
-  return result.data.categories as { id: string; name: string }[];
+  const result = await client
+    .query<{
+      categories: { id: string; name: string }[];
+    }>(listCategoriesQuery, {})
+    .toPromise();
+  return result.data?.categories ?? [];
 }
 
 const addCategoryMutation = gql`
@@ -122,9 +131,14 @@ async function _addCategory(name: string) {
   }
 
   const result = await client
-    .mutation(addCategoryMutation, { name })
+    .mutation<
+      {
+        addCategory: { id: string; name: string };
+      },
+      { name: string }
+    >(addCategoryMutation, { name })
     .toPromise();
-  return result.data.addCategory as { id: string; name: string };
+  return result.data?.addCategory;
 }
 
 const listItemsQuery = gql`
@@ -159,20 +173,26 @@ async function _listItems() {
     throw new Error("Not logged in");
   }
 
-  const result = await client.query(listItemsQuery, {}).toPromise();
-  return result.data.records as {
-    date: number;
-    id: string;
-    name: string;
-    price: number;
-    type: {
-      id: string
-      name: string
-    }
-  }[];
+  const result = await client
+    .query<{
+      records: {
+        date: number;
+        id: string;
+        name: string;
+        price: number;
+        type: {
+          id: string;
+          name: string;
+        };
+      }[];
+    }>(listItemsQuery, {})
+    .toPromise();
+
+  return result.data?.records ?? [];
 }
 
-const getItemQuery = gql`#graphql
+const getItemQuery = gql`
+  #graphql
   query getItemQuery($id: UUID!) {
     record(id: $id) {
       date
@@ -182,7 +202,7 @@ const getItemQuery = gql`#graphql
       type
     }
   }
-`
+`;
 export async function getItem(id: string) {
   try {
     return await _getItem(id);
@@ -199,14 +219,18 @@ async function _getItem(id: string) {
     throw new Error("Not logged in");
   }
 
-  const result = await client.query(getItemQuery, { id }).toPromise();
-  return result.data.record as {
-    date: number;
-    id: string;
-    name: string;
-    price: number;
-    type: string;
-  };
+  const result = await client
+    .query<{
+      record: {
+        date: number;
+        id: string;
+        name: string;
+        price: number;
+        type: string;
+      };
+    }>(getItemQuery, { id })
+    .toPromise();
+  return result.data?.record;
 }
 
 const addItemMutation = gql`
@@ -242,18 +266,27 @@ async function _addItem(name: string, price: number, type: string) {
   }
 
   const result = await client
-    .mutation(addItemMutation, { name, price, type })
+    .mutation<
+      {
+        addRecord: {
+          date: number;
+          id: string;
+          name: string;
+          price: number;
+          type: {
+            id: string;
+            name: string;
+          };
+        };
+      },
+      {
+        name: string;
+        price: number;
+        type: string;
+      }
+    >(addItemMutation, { name, price, type })
     .toPromise();
-  return result.data.addRecord as {
-    date: number;
-    id: string;
-    name: string;
-    price: number;
-    type: {
-      id: string
-      name: string
-    };
-  };
+  return result.data?.addRecord;
 }
 
 const mutItemMutation = gql`
@@ -284,10 +317,7 @@ export async function mutItem(
   }
 }
 
-async function _mutItem(
-  id: string,
-  rest: { date: number; type: string }
-) {
+async function _mutItem(id: string, rest: { date: number; type: string }) {
   await loadToken();
 
   if (!token) {
@@ -295,18 +325,27 @@ async function _mutItem(
   }
 
   const result = await client
-    .mutation(mutItemMutation, { id, ...rest })
+    .mutation<
+      {
+        mutRecord: {
+          date: number;
+          id: string;
+          name: string;
+          price: number;
+          type: {
+            id: string;
+            name: string;
+          };
+        };
+      },
+      {
+        id: string;
+        date: number;
+        type: string;
+      }
+    >(mutItemMutation, { id, ...rest })
     .toPromise();
-  return result.data.mutRecord as {
-    date: number;
-    id: string;
-    name: string;
-    price: number;
-    type: {
-      id: string
-      name: string
-    };
-  };
+  return result.data?.mutRecord;
 }
 
 const delItemMutation = gql`
@@ -341,15 +380,22 @@ async function _delItem(id: string) {
     throw new Error("Not logged in");
   }
 
-  const result = await client.mutation(delItemMutation, { id }).toPromise();
-  return result.data.delRecord as {
-    date: number;
-    id: string;
-    name: string;
-    price: number;
-    type: {
-      id: string
-      name: string
-    };
-  };
+  const result = await client
+    .mutation<
+      {
+        delRecord: {
+          date: number;
+          id: string;
+          name: string;
+          price: number;
+          type: {
+            id: string;
+            name: string;
+          };
+        };
+      },
+      { id: string }
+    >(delItemMutation, { id })
+    .toPromise();
+  return result.data?.delRecord;
 }
