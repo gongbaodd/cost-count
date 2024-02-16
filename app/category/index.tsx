@@ -9,15 +9,44 @@ import {
   TextField,
 } from "@/packages/ignite";
 import { CategoryStore, Type, UserStore } from "@/packages/models";
+import { CreateCategoryStore } from "@/packages/models/CreateCategory";
 import { SelectedCategoryStore } from "@/packages/models/SelectedCategory";
 import { colors, spacing } from "@/packages/theme";
 import { router, useFocusEffect } from "expo-router";
-import { Suspense, useCallback, useState, useSyncExternalStore } from "react";
+import {
+  Suspense,
+  useCallback,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { View, ViewStyle } from "react-native";
 
 const running = require("../../assets/images/running.png");
 
 export default function Categories() {
+  return (
+    <Screen
+      contentContainerStyle={$modal}
+      preset="fixed"
+      safeAreaEdges={["bottom"]}
+    >
+      <Header
+        title="Category"
+        rightIcon="x"
+        onRightPress={() => router.back()}
+        style={$modalTitle}
+      />
+      <LoadCategories />
+      <AddCategory />
+    </Screen>
+  );
+}
+
+function Empty() {
+  return <EmptyState style={$empty} buttonOnPress={() => router.back()} />;
+}
+
+function LoadCategories() {
   let fetchCategories: null | Promise<void> = new Promise(async (resolve) => {
     await UserStore.load();
     const user = UserStore.getSnapshot();
@@ -35,60 +64,13 @@ export default function Categories() {
     }
   });
 
-  const [newCategory, setNewCategory] = useState("");
-
   return (
-    <Screen
-      contentContainerStyle={$modal}
-      preset="fixed"
-      safeAreaEdges={[ "bottom"]}
-    >
-      <Header
-        title="Category"
-        rightIcon="x"
-        onRightPress={() => router.back()}
-        style={$modalTitle}
-      />
-      <Suspense fallback={<Loading />}>
-        <Categories />
-      </Suspense>
-      <View style={$addCategory}>
-        <TextField
-          placeholder="Add Category"
-          value={newCategory}
-          onChangeText={setNewCategory}
-          RightAccessory={() => {
-            return (
-              <Button
-                text="Add"
-                style={$addCategoryButton}
-                onPress={onAddCategoryPress}
-                disabled={!newCategory}
-              />
-            );
-          }}
-        ></TextField>
-      </View>
-    </Screen>
+    <Suspense fallback={<Loading />}>
+      <List />
+    </Suspense>
   );
 
-  function onAddCategoryPress() {
-    const user = UserStore.getSnapshot();
-
-    if (user) {
-      CategoryStore.remote.addCategory({ name: newCategory });
-    } else {
-      CategoryStore.storage.addCategory({ name: newCategory });
-    }
-
-    setNewCategory("");
-  }
-
-  function Empty() {
-    return <EmptyState style={$empty} buttonOnPress={() => router.back()} />;
-  }
-
-  function Categories() {
+  function List() {
     if (fetchCategories) {
       throw fetchCategories;
     }
@@ -122,6 +104,45 @@ export default function Categories() {
       />
     );
   }
+}
+
+function AddCategory() {
+  const category = useSyncExternalStore(
+    CreateCategoryStore.subscribe,
+    CreateCategoryStore.getSnapshot
+  );
+
+  const onAddCategoryPress = useCallback(async () => {
+    const user = UserStore.getSnapshot();
+
+    if (user) {
+      await CategoryStore.remote.addCategory({ name: category!.name });
+    } else {
+      await CategoryStore.storage.addCategory({ name: category!.name });
+    }
+
+    CreateCategoryStore.clear();
+  }, [category]);
+
+  return (
+    <View style={$addCategory}>
+      <TextField
+        placeholder="Add Category"
+        value={category?.name ?? ""}
+        onChangeText={CreateCategoryStore.setName}
+        RightAccessory={() => {
+          return (
+            <Button
+              text="Add"
+              style={$addCategoryButton}
+              onPress={onAddCategoryPress}
+              disabled={!CreateCategoryStore.isValid()}
+            />
+          );
+        }}
+      ></TextField>
+    </View>
+  );
 }
 
 export function CategoryButton({
@@ -201,9 +222,7 @@ const $addCategoryButton: ViewStyle = {
   minHeight: spacing.lg,
 };
 
-const $addCategory: ViewStyle = {
-
-};
+const $addCategory: ViewStyle = {};
 
 const $modalTitle: ViewStyle = {
   flexDirection: "row",

@@ -1,7 +1,7 @@
 import { addItem, delItem, listItems, mutItem, storage } from "../services";
 import { CategoryStore } from "./Categories";
 
-interface Item {
+export interface Item {
   id: string;
   name: string;
   price: number;

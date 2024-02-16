@@ -5,52 +5,50 @@ import { TextField } from "@/packages/ignite/TextField";
 import { useCallback, useState, useSyncExternalStore } from "react";
 import { PriceTextField } from "@/packages/components";
 import { ItemStore, Type, UserStore } from "@/packages/models";
-import { router } from "expo-router"
+import { router } from "expo-router";
 import { CategoryButton } from "./category";
+import { CreateItemStore } from "@/packages/models/CreateItem";
 
 const logo = require("../assets/images/logo.png");
 
 export default function Home() {
-
-  const [content, setContent] = useState("")
-  const [price, setPrice] = useState(0)
-  const [category, setCategory] = useState<Type | null>(null)
+  const item = useSyncExternalStore(
+    CreateItemStore.subscribe,
+    CreateItemStore.getSnapshot
+  );
 
   const onAddPressed = useCallback(async () => {
-    if (!content) return 
-    if (!category) return
+    if (!CreateItemStore.isValid()) return;
 
     const newItem = {
-      name: content,
-      price,
-      date: +(new Date()),
-      type: category.id
-    }
+      name: item!.name,
+      price: item!.price,
+      date: +new Date(),
+      type: item!.type!.id,
+    };
 
-    let id = ""
+    let id = "";
 
-    const user = UserStore.getSnapshot()
+    const user = UserStore.getSnapshot();
 
     if (user) {
-      const added = await ItemStore.remote.addItem(newItem)
-      id = added?.id ?? id
+      const added = await ItemStore.remote.addItem(newItem);
+      id = added?.id ?? id;
     } else {
-      const added = await ItemStore.storage.addItem(newItem)
-      id = added?.id ?? id
+      const added = await ItemStore.storage.addItem(newItem);
+      id = added?.id ?? id;
     }
 
     if (id) {
-      setContent("")
-      setPrice(0)
-      setCategory(null)
+      CreateItemStore.clear();
 
-      router.push(`/record/${id}`)
+      router.push(`/record/${id}`);
     }
-  }, [content, price, category])
+  }, [item]);
 
   const onRecordPressed = useCallback(() => {
-    router.push("/record/")
-  }, [])
+    router.push("/record/");
+  }, []);
 
   return (
     <Screen
@@ -60,17 +58,23 @@ export default function Home() {
     >
       <Image source={logo} resizeMode="contain" style={$logo} />
       <TextField
-        value={content}
+        value={item?.name ?? ""}
         autoCorrect={false}
         autoCapitalize="none"
         label="Name"
         placeholder="name"
-        onChangeText={setContent}
+        onChangeText={CreateItemStore.setName}
       />
 
-      <PriceTextField price={price} setPrice={setPrice} />
+      <PriceTextField
+        price={item?.price ?? 0}
+        setPrice={CreateItemStore.setPrice}
+      />
 
-      <CategoryButton value={category} setValue={setCategory} />
+      <CategoryButton
+        value={item?.type ?? null}
+        setValue={CreateItemStore.setType}
+      />
 
       <Button
         text="Add"
@@ -89,19 +93,17 @@ export default function Home() {
   );
 }
 
-
 const $root: ViewStyle = {
   paddingVertical: spacing.xxl,
   paddingHorizontal: spacing.lg,
-}
+};
 
 const $addButton: ViewStyle = {
   marginTop: spacing.xl,
-}
+};
 
 const $logo: ImageStyle = {
   height: 128,
   width: "100%",
   marginBottom: spacing.xxl,
-}
-
+};
