@@ -1,5 +1,9 @@
 import { ExpoConfig, ConfigContext } from "@expo/config"
 
+if (!process.env.GRAPHQL_URL) {
+  throw new Error("GRAPHQL_URL is not defined in .env.local")
+}
+
 /**
  * Use ts-node here so we can use TypeScript for our Config Plugins
  * and not have to compile them to JavaScript

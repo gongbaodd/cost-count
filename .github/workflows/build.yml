@@ -57,7 +57,7 @@ jobs:
         run: yarn prebuild
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v4
+        uses: android-actions/setup-android@v3
       - uses: actions/cache@v3
         with:
           path: |
