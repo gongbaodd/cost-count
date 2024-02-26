@@ -8,6 +8,7 @@ jobs:
   build-ios:
     name: iOS DEV build
     runs-on: macos-14
+    environment: build
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,9 +40,10 @@ jobs:
           name: unsigned-ipa
           path: ios/unsigned.xcarchive/Products/unsigned.ipa
 
-  build-android:
+  build-android:    
     name: Android DEV build
     runs-on: ubuntu-latest
+    environment: build
     steps:
       - name: Checkout
         uses: actions/checkout@v4
