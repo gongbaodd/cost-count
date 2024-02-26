@@ -24,11 +24,12 @@ jobs:
       
       - name: Bundle
         run: |
+          pwd
           cd ios/unsigned.xcarchive/Products
           mv Application Payload
           zip -r unsigned.ipa Payload
       
-      - name: collect ipa artifact
+      - name: Collect ipa artifact
         uses: actions/upload-artifact@v2
         with:
           name: unsigned-ipa
