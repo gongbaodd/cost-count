@@ -24,8 +24,8 @@ jobs:
       
       - name: Bundle
         run: |
-          pwd
           cd ios/unsigned.xcarchive/Products
+          ls
           mv Application Payload
           zip -r unsigned.ipa Payload
       
