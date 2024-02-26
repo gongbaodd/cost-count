@@ -1,0 +1,36 @@
+name: "[DEV] Build iOS"
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Expo prebuild
+        run: yarn prebuild
+
+      - name: Archive
+        run: |
+          cd ios
+          xcodebuild -workspace CostCount.xcworkspace -scheme CostCount -configuration Release clean archive -archivePath unsigned.xcarchive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+      
+      - name: Bundle
+        run: |
+          cd ios/unsigned.xcarchive/Products
+          mv Application Payload
+          zip -r unsigned.ipa Payload
+      
+      - name: collect ipa artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: unsigned-ipa
+          path: ios/unsigned.xcarchive/Products/unsigned.ipa
+        
