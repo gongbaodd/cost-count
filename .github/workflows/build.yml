@@ -14,7 +14,7 @@ jobs:
 
       - name: Setup Environment
         run: |
-          echo "$ENV_VAR" >> .env.local
+          echo "${{ENV_VAR}}" >> .env.local
 
       - name: Install dependencies
         run: yarn install
