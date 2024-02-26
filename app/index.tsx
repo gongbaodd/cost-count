@@ -1,5 +1,5 @@
 import { ImageStyle, ViewStyle, Image } from "react-native";
-import { Button, Screen } from "@/packages/ignite";
+import { Button, Screen, Text } from "@/packages/ignite";
 import { spacing } from "@/packages/theme";
 import { TextField } from "@/packages/ignite/TextField";
 import { useCallback, useState, useSyncExternalStore } from "react";
@@ -8,6 +8,7 @@ import { ItemStore, Type, UserStore } from "@/packages/models";
 import { router } from "expo-router";
 import { CategoryButton } from "./category";
 import { CreateItemStore } from "@/packages/models/CreateItem";
+import { GRAPHQL_URL as URL } from "@env";
 
 const logo = require("../assets/images/logo.png");
 
@@ -57,6 +58,9 @@ export default function Home() {
       safeAreaEdges={["top", "bottom"]}
     >
       <Image source={logo} resizeMode="contain" style={$logo} />
+      <Text>
+      URL: {URL}
+      </Text>
       <TextField
         value={item?.name ?? ""}
         autoCorrect={false}
