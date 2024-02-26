@@ -62,7 +62,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17.0.7'
-          distribution: 'microsoft'
+          distribution: 'zulu'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -87,7 +87,7 @@ jobs:
 
       - name: find apk artifact
         run: |
-          cd android\app\build\outputs\apk\debug
+          cd android/app/build/outputs/apk/debug
           ls
 
       - name: Collect apk artifact
